@@ -1,4 +1,3 @@
-
 package dayN
 
 import java.io.File
@@ -10,7 +9,11 @@ fun main() {
 
 object DayN {
 
-    private fun parseInput(): List<String> = File("src/main/kotlin/dayN/input.txt").readLines()
+    private val directory: String
+        get() = this::class.java.`package`.name
+
+    private fun parseInput(): List<String> =
+        File("src/main/kotlin/$directory/input.txt").readLines()
 
     fun solvePartOne(): String {
         return ""
