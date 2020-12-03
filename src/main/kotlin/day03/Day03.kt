@@ -13,10 +13,17 @@ object Day03 {
     private val directory: String
         get() = this::class.java.`package`.name
 
-    private val input = parseInput()
-    private fun parseInput(): Map<Point, Boolean> =
-        File("src/main/kotlin/$directory/input.txt")
+    private val input: Map<Point, Boolean>
+    private val width: Int
+    private val height: Int
+
+    init {
+        input = File("src/main/kotlin/$directory/input.txt")
             .readLines()
+            .also {
+                height = it.size
+                width = it.first().length
+            }
             .mapIndexed { y, s ->
                 s.mapIndexed { x, c ->
                     Point(x, y) to (c == '#')
@@ -24,7 +31,7 @@ object Day03 {
             }
             .flatten()
             .toMap()
-
+    }
 
     fun solvePartOne(): String {
         return numberOfTreeHits(3, 1).toString()
@@ -38,23 +45,15 @@ object Day03 {
     }
 
     private fun numberOfTreeHits(xSlope: Int, ySlope: Int): Long {
-        val targetY = input.keys.maxByOrNull { it.y }!!.y
-        val maxX = input.keys.maxByOrNull { it.x }!!.x
         var currentPos = Point(0, 0)
         val treesHit = mutableListOf<Point>()
-
-        while (currentPos.y <= targetY) {
-            var newX = currentPos.x + xSlope
-            val newY = currentPos.y + ySlope
-            if (newX > maxX) {
-                newX -= maxX.inc()
-            }
-            currentPos = Point(newX, newY)
+        while (currentPos.y <= height) {
+            val newX = (currentPos.x + xSlope) % width
+            currentPos = Point(newX, currentPos.y + ySlope)
             if (input[currentPos] == true) {
                 treesHit.add(currentPos)
             }
         }
-
         return treesHit.size.toLong()
     }
 }
