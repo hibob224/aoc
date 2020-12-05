@@ -1,4 +1,6 @@
-import day04.Day04
+package y2020
+
+import y2020.day04.Day04
 import org.junit.jupiter.api.Test
 
 import org.junit.jupiter.api.Assertions.*

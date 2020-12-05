@@ -1,4 +1,4 @@
-package day04
+package y2020.day04
 
 import java.io.File
 

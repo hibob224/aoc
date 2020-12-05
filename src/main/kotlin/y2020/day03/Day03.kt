@@ -1,4 +1,4 @@
-package day03
+package y2020.day03
 
 import utils.Point
 import java.io.File
