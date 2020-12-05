@@ -10,7 +10,7 @@ fun main() {
 object Day04 {
 
     private val directory: String
-        get() = this::class.java.`package`.name
+        get() = this::class.java.`package`.name.replace('.', '/')
     private val passports = mutableListOf<Passport>()
 
     init {

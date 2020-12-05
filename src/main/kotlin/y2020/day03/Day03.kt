@@ -11,7 +11,7 @@ fun main() {
 object Day03 {
 
     private val directory: String
-        get() = this::class.java.`package`.name
+        get() = this::class.java.`package`.name.replace('.', '/')
 
     private val input: Map<Point, Boolean>
     private val width: Int

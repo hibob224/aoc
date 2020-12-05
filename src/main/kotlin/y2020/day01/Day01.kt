@@ -10,7 +10,7 @@ fun main() {
 object Day01 {
 
     private val directory: String
-        get() = this::class.java.`package`.name
+        get() = this::class.java.`package`.name.replace('.', '/')
 
     private fun parseInput(): List<Int> =
         File("src/main/kotlin/$directory/input.txt")
