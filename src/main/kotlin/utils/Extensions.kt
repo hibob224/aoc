@@ -5,6 +5,8 @@ import kotlin.math.roundToInt
 
 fun Int?.orZero(): Int = this ?: 0
 
+fun Long?.orZero(): Long = this ?: 0
+
 fun Int.isMultipleOf(x: Int): Boolean = this % x == 0
 
 val Int.isEven: Boolean
