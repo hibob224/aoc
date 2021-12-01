@@ -19,12 +19,10 @@ object Day01 {
 
     fun solvePartOne(): Int = input
         .windowed(2)
-        .filter { it[1] > it[0] }
-        .size
+        .count { it[1] > it[0] }
 
     fun solvePartTwo(): Int = input.windowed(3)
         .map(List<Int>::sum)
         .windowed(2)
-        .filter { it[1] > it[0] }
-        .size
+        .count { it[1] > it[0] }
 }

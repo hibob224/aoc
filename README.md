@@ -1,4 +1,4 @@
-# aoc2020
-Advent of Code 2020 - Kotlin
+# aoc
+Advent of Code - Kotlin
 
-![Test Badge](https://github.com/hibob224/aoc2020/workflows/Test%20CI/badge.svg)
+![Test Badge](https://github.com/hibob224/aoc/workflows/Test%20CI/badge.svg)
