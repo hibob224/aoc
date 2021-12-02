@@ -15,11 +15,11 @@ object DayN {
     private fun parseInput(): List<String> =
         File("src/main/kotlin/$directory/input.txt").readLines()
 
-    fun solvePartOne(): String {
-        return ""
+    fun solvePartOne(): Int {
+        return -1
     }
 
-    fun solvePartTwo(): String {
-        return ""
+    fun solvePartTwo(): Int {
+        return -1
     }
 }
