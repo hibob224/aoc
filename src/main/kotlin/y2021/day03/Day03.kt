@@ -16,43 +16,22 @@ object Day03 {
     private val fileInput = File("src/main/kotlin/$directory/input.txt").readLines()
 
     fun solvePartOne(): Int {
-        val input = fileInput
-            .map { it.toCharArray().toList() }
-            .transpose()
-            .map { it.groupingBy { it }.eachCount().maxByOrNull { it.value }!!.key.toString().toInt() }
+        val threshold = fileInput.size / 2
+        val gamma = List(fileInput.first().length) { index ->
+            if (fileInput.count { it[index] == '1' } >= threshold) 1 else 0
+        }
+        val epsilon = gamma.map { it xor 1 }
 
-        val gamma = input.joinToString(separator = "") { "$it" }
-        val epsilon = input.map { it xor 1 }.joinToString(separator = "") { "$it" }
-
-        return gamma.toInt(2) * epsilon.toInt(2)
+        return gamma.joinToString(separator = "") { "$it" }.toInt(2) * epsilon.joinToString(separator = "") { "$it" }.toInt(2)
     }
 
     fun solvePartTwo(): Int {
-        val oxygenRatingCandidates = fileInput.toMutableList()
-        val co2RatingCandidates = fileInput.toMutableList()
+        var oxygenRatingCandidates = fileInput.toList()
+        var co2RatingCandidates = fileInput.toList()
 
-        var index = 0
-
-        while (oxygenRatingCandidates.size > 1) {
-            val counts = oxygenRatingCandidates
-                .map { it[index] }
-                .groupingBy { it }
-                .eachCount()
-            val mostCommonAtIndex = '1'.takeIf { counts['1'].orZero() >= counts['0'].orZero() } ?: '0'
-            oxygenRatingCandidates.removeIf { it[index] != mostCommonAtIndex }
-            index++
-        }
-
-        index = 0
-
-        while (co2RatingCandidates.size > 1) {
-            val counts = co2RatingCandidates
-                .map { it[index] }
-                .groupingBy { it }
-                .eachCount()
-            val leastCommonAtIndex = '0'.takeIf { counts['0'].orZero() <= counts['1'].orZero() } ?: '1'
-            co2RatingCandidates.removeIf { it[index] != leastCommonAtIndex }
-            index++
+        (0 until fileInput.first().length).forEach { index ->
+            oxygenRatingCandidates = filterByMostCommon(oxygenRatingCandidates, index)
+            co2RatingCandidates = filterByLeastCommon(co2RatingCandidates, index)
         }
 
         val oxyRating = oxygenRatingCandidates.first().toInt(2)
@@ -61,9 +40,23 @@ object Day03 {
         return oxyRating * co2Rating
     }
 
-    private fun <T> List<List<T>>.transpose(): List<List<T>> {
-        val result = (first().indices).map { mutableListOf<T>() }.toMutableList()
-        forEach { list -> result.zip(list).forEach { it.first.add(it.second) } }
-        return result
+    private fun filterByMostCommon(list: List<String>, index: Int): List<String> {
+        if (list.size == 1) return list
+        val counts = list
+            .map { it[index] }
+            .groupingBy { it }
+            .eachCount()
+        val mostCommonAtIndex = '1'.takeIf { counts['1'].orZero() >= counts['0'].orZero() } ?: '0'
+        return list.filter { it[index] == mostCommonAtIndex }
+    }
+
+    private fun filterByLeastCommon(list: List<String>, index: Int): List<String> {
+        if (list.size == 1) return list
+        val counts = list
+            .map { it[index] }
+            .groupingBy { it }
+            .eachCount()
+        val leastCommonAtIndex = '0'.takeIf { counts['0'].orZero() <= counts['1'].orZero() } ?: '1'
+        return list.filter { it[index] == leastCommonAtIndex }
     }
 }
