@@ -43,21 +43,11 @@ object Day05 {
         val board = mutableMapOf<Point, Int>()
 
         input.forEach {
-            if (it.first.x != it.second.x && it.first.y != it.second.y) {
-                // Diagonal
-                val xRange = (it.first.x toward it.second.x).toList()
-                val yRange = (it.first.y toward it.second.y).toList()
-                repeat(xRange.size) {
-                    val point = Point(xRange[it], yRange[it])
-                    board[point] = board.getOrDefault(point, 0) + 1
-                }
-                return@forEach
-            }
-            it.first.x.toward(it.second.x).forEach { x ->
-                it.first.y.toward(it.second.y).forEach { y ->
-                    val point = Point(x, y)
-                    board[point] = board.getOrDefault(point, 0) + 1
-                }
+            val xRange = (it.first.x toward it.second.x).toList()
+            val yRange = (it.first.y toward it.second.y).toList()
+            repeat(maxOf(xRange.size, yRange.size)) {
+                val point = Point(xRange.getOrElse(it) { xRange.last() }, yRange.getOrElse(it) { yRange.last() })
+                board[point] = board.getOrDefault(point, 0) + 1
             }
         }
 
