@@ -13,54 +13,44 @@ object Day09 {
     private val directory: String
         get() = this::class.java.`package`.name.replace('.', '/')
 
-    private val possibleMoves = listOf(Point(x = 0, y = -1), Point(x = 0, y = 1), Point(x = -1, y = 0), Point(x = 1, y = 0))
+    private val possibleMoves = listOf(
+        Point(x = 0, y = -1),
+        Point(x = 0, y = 1),
+        Point(x = -1, y = 0),
+        Point(x = 1, y = 0)
+    )
+
     private fun parseInput(): List<String> =
         File("src/main/kotlin/$directory/input.txt").readLines()
 
-    fun solvePartOne(): Int {
-        val input = parseInput()
-        val lowPoints = mutableListOf<Int>()
-
-        repeat(input.first().length) { x ->
-            repeat(input.size) { y ->
-                val height = input[y][x].toString().toInt()
-                if (
-                    possibleMoves.all { move ->
-                        height < (input.getOrNull(y + move.y)?.getOrNull(x + move.x)?.toString()?.toInt()
-                            ?: Integer.MAX_VALUE)
-                    }
-                ) {
-                    lowPoints += height
+    private val input: MutableMap<Point, Int> =
+        File("src/main/kotlin/$directory/input.txt")
+            .readLines()
+            .flatMapIndexed { y, row ->
+                row.mapIndexed { x, c ->
+                    Point(x, y) to c.toString().toInt()
                 }
-            }
-        }
+            }.toMap().toMutableMap()
 
-        return lowPoints.sum() + lowPoints.size
-    }
+
+    fun solvePartOne(): Int = input
+        .filter {
+            val (point, height) = it
+            possibleMoves.all { move ->
+                height < input.getOrDefault(point.copy(x = point.x + move.x, y = point.y + move.y), Integer.MAX_VALUE)
+            }
+        }.let {
+            it.values.sum() + it.size
+        }
 
     fun solvePartTwo(): Int {
-        val input = parseInput()
-        val map = mutableMapOf<Point, Int>()
-
-        repeat(input.first().length) { x ->
-            repeat(input.size) { y ->
-                map[Point(x, y)] = input[y][x].toString().toInt()
+        // Get the low points
+        val lowPoints = input.filter {
+            val (point, height) = it
+            possibleMoves.all { move ->
+                height < input.getOrDefault(point.copy(x = point.x + move.x, y = point.y + move.y), Integer.MAX_VALUE)
             }
-        }
-
-        val lowPoints = mutableListOf<Point>()
-
-        map.forEach {
-            val point = it.key
-            val height = it.value
-
-            val lowPoint = possibleMoves.all { move ->
-                height < map.getOrDefault(point.copy(x = point.x + move.x, y = point.y + move.y), Integer.MAX_VALUE)
-            }
-            if (lowPoint) {
-                lowPoints += point
-            }
-        }
+        }.keys
 
         return lowPoints.map {
             val basinArea = mutableSetOf<Point>()
@@ -69,9 +59,11 @@ object Day09 {
             while (locations.isNotEmpty()) {
                 val point = locations.removeFirst()
 
+                // Go through every move from this point, if we haven't seen the new point before and it isn't a ridge
+                // (value 9), then add it to the basinArea and list of locations to check
                 possibleMoves.forEach { move ->
                     val checkPoint = point.copy(x = point.x + move.x, y = point.y + move.y)
-                    if (checkPoint !in basinArea && map.getOrDefault(checkPoint, 9) != 9) {
+                    if (checkPoint !in basinArea && input.getOrDefault(checkPoint, 9) != 9) {
                         // Valid space, expand
                         basinArea += checkPoint
                         locations.addFirst(checkPoint)
