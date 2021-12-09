@@ -31,12 +31,22 @@ object Day07 {
     fun solvePartTwo(): Int {
         val minPos = input.minOrNull()!!
         val maxPos = input.maxOrNull()!!
+        var min = Integer.MAX_VALUE
 
-        return (minPos..maxPos).minOf { pos ->
-            input.sumOf {
-                val positionsMoved = (it - pos).absoluteValue
-                (positionsMoved downTo 1).sum()
+        (minPos..maxPos).forEach posLoop@{ pos ->
+            var posValue = 0
+            input.forEach { crab ->
+                val positionsMoved = (crab - pos).absoluteValue
+                (positionsMoved downTo 1).forEach {
+                    posValue += it
+                    if (posValue > min) {
+                        return@posLoop
+                    }
+                }
             }
+            min = minOf(min, posValue)
         }
+
+        return min
     }
 }
