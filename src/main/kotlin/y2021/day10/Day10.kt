@@ -12,22 +12,19 @@ object Day10 {
     private val directory: String
         get() = this::class.java.`package`.name.replace('.', '/')
 
-    private fun parseInput(): List<String> =
-        File("src/main/kotlin/$directory/input.txt").readLines()
+    private val tagMapping = mapOf('(' to ')', '{' to '}', '[' to ']', '<' to '>')
+    private val input: List<String> = File("src/main/kotlin/$directory/input.txt").readLines()
 
     fun solvePartOne(): Int {
-        val openTags = listOf('(', '{', '[', '<')
-        val closeTags = listOf(')', '}', ']', '>')
-
         val illegalChars = mutableListOf<Char>()
 
-        parseInput().forEach lineLoop@{
+        input.forEach lineLoop@{ line ->
             val stack = ArrayDeque<Char>()
-            it.forEach {
-                if (it in openTags) {
+            line.forEach {
+                if (it in tagMapping.keys) {
                     stack.addFirst(it)
-                } else if (it in closeTags) {
-                    if (closeTags[openTags.indexOf(stack.first())] != it) {
+                } else {
+                    if (tagMapping[stack.first()] != it) {
                         illegalChars += it
                         return@lineLoop
                     }
@@ -36,52 +33,30 @@ object Day10 {
             }
         }
 
-        return illegalChars.sumBy {
-            when (it) {
-                ')' -> 3
-                ']' -> 57
-                '}' -> 1197
-                '>' -> 25137
-                else -> throw IllegalStateException("Illegal illegal char")
-            }
-        }
+        val tagScores = mutableMapOf(')' to 3, ']' to 57, '}' to 1197, '>' to 25137)
+        return illegalChars.sumBy { tagScores[it]!! }
     }
 
     fun solvePartTwo(): Long {
-        val openTags = listOf('(', '{', '[', '<')
-        val closeTags = listOf(')', '}', ']', '>')
-
-        val incomplete = mutableListOf<ArrayDeque<Char>>()
-        parseInput().forEach lineLoop@{
+        val missingChars = mutableListOf<List<Char>>()
+        input.forEach lineLoop@{ line ->
             val stack = ArrayDeque<Char>()
-            it.forEach {
-                if (it in openTags) {
+            line.forEach {
+                if (it in tagMapping.keys) {
                     stack.addFirst(it)
-                } else if (it in closeTags) {
-                    if (closeTags[openTags.indexOf(stack.first())] != it) {
+                } else {
+                    if (tagMapping[stack.first()] != it) {
                         return@lineLoop
                     }
                     stack.removeFirst()
                 }
             }
-            incomplete += stack
+            missingChars += stack.map { tagMapping[it]!! }
         }
 
-        // Now complete the stacks
-        val missingChars = incomplete.map {
-            it.map { closeTags[openTags.indexOf(it)] }
-        }
-
+        val tagScores = mutableMapOf(')' to 1L, ']' to 2L, '}' to 3L, '>' to 4L)
         val scores = missingChars.map {
-            it.fold(0L) { acc, c ->
-                acc * 5L + when (c) {
-                    ')' -> 1L
-                    ']' -> 2L
-                    '}' -> 3L
-                    '>' -> 4L
-                    else -> throw IllegalStateException("Illegal illegal char")
-                }
-            }
+            it.fold(0L) { acc, c -> acc * 5L + tagScores[c]!! }
         }.sorted()
         val middle = scores.size / 2
         return scores[middle]
