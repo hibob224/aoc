@@ -48,8 +48,52 @@ object Day14 {
         return counts.maxByOrNull { it.value }!!.value - counts.minByOrNull { it.value }!!.value
     }
 
-    fun solvePartTwo(): Int {
-        return -1
+    fun solvePartTwo(): Long {
+        val input = parseInput()
+
+        val template = input.first()
+        var counts: Map<String, Long>
+        val rules = mutableMapOf<String, List<String>>()
+        val regex = """^([A-Z]{2}) -> ([A-Z])${'$'}""".toRegex()
+
+        (2..input.lastIndex).forEach { index ->
+            val (_, a, b) = regex.find(input[index])!!.groupValues
+            rules[a] = listOf("${a.first()}$b", "$b${a[1]}")
+        }
+
+        counts = template
+            .windowed(2)
+            .groupingBy { it }
+            .eachCount()
+            .map { it.key to it.value.toLong() }
+            .toMap()
+
+        repeat(40) {
+            val newCounts = mutableMapOf<String, Long>()
+            counts.forEach { (key, value) ->
+                rules[key]?.let { rule ->
+                    rule.forEach {
+                        newCounts.putIfAbsent(it, 0L)
+                        newCounts[it] = newCounts[it]!! + value
+                    }
+                } ?: run {
+                    newCounts.putIfAbsent(key, 0L)
+                    newCounts[key] = newCounts[key]!! + value
+                }
+            }
+            counts = newCounts
+        }
+
+        val letterCount = mutableMapOf<Char, Long>()
+
+        counts.forEach { (key, value) ->
+            key.toCharArray().forEach {
+                letterCount.putIfAbsent(it, 0L)
+                letterCount[it] = letterCount[it]!! + value
+            }
+        }
+
+        return ((letterCount.maxByOrNull { it.value }!!.value - letterCount.minByOrNull { it.value }!!.value) / 2)
     }
 
     fun String.insert(index: Int, string: String): String {
