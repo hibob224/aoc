@@ -12,63 +12,28 @@ object Day14 {
     private val directory: String
         get() = this::class.java.`package`.name.replace('.', '/')
 
-    private fun parseInput(): List<String> =
-        File("src/main/kotlin/$directory/input.txt").readLines()
-
-    fun solvePartOne(): Int {
-        val input = parseInput()
-
-        var template = input.first()
-        val rules = mutableMapOf<Regex, String>()
-        val regex = """^([A-Z]{2}) -> ([A-Z])${'$'}""".toRegex()
-
-        (2..input.lastIndex).forEach { index ->
+    private val regex = """^([A-Z]{2}) -> ([A-Z])${'$'}""".toRegex()
+    private val input: List<String> = File("src/main/kotlin/$directory/input.txt").readLines()
+    private val counts: Map<String, Long> = input
+        .first()
+        .windowed(2)
+        .groupingBy { it }
+        .eachCount()
+        .map { it.key to it.value.toLong() }
+        .toMap()
+    private val rules: Map<String, List<String>> =
+        (2..input.lastIndex).associate { index ->
             val (_, a, b) = regex.find(input[index])!!.groupValues
-            rules["(?=($a))".toRegex()] = b
+            a to listOf("${a.first()}$b", "$b${a[1]}")
         }
 
-        repeat(10) {
-            val insertions = mutableMapOf<Int, String>()
+    fun solvePartOne(): Long = solve(10)
 
-            rules.forEach { (key, value) ->
-                key.findAll(template).forEach {
-                    insertions[it.range.first.inc()] = value
-                }
-            }
+    fun solvePartTwo(): Long = solve(40)
 
-            insertions.entries
-                .sortedBy { it.key }
-                .forEachIndexed { index, entry ->
-                    template = template.insert(entry.key + index, entry.value)
-                }
-        }
-
-        val counts = template.groupingBy { it }.eachCount()
-
-        return counts.maxByOrNull { it.value }!!.value - counts.minByOrNull { it.value }!!.value
-    }
-
-    fun solvePartTwo(): Long {
-        val input = parseInput()
-
-        val template = input.first()
-        var counts: Map<String, Long>
-        val rules = mutableMapOf<String, List<String>>()
-        val regex = """^([A-Z]{2}) -> ([A-Z])${'$'}""".toRegex()
-
-        (2..input.lastIndex).forEach { index ->
-            val (_, a, b) = regex.find(input[index])!!.groupValues
-            rules[a] = listOf("${a.first()}$b", "$b${a[1]}")
-        }
-
-        counts = template
-            .windowed(2)
-            .groupingBy { it }
-            .eachCount()
-            .map { it.key to it.value.toLong() }
-            .toMap()
-
-        repeat(40) {
+    private fun solve(iterations: Int): Long {
+        var counts = this.counts
+        repeat(iterations) {
             val newCounts = mutableMapOf<String, Long>()
             counts.forEach { (key, value) ->
                 rules[key]?.let { rule ->
@@ -94,9 +59,5 @@ object Day14 {
         }
 
         return ((letterCount.maxByOrNull { it.value }!!.value - letterCount.minByOrNull { it.value }!!.value) / 2)
-    }
-
-    fun String.insert(index: Int, string: String): String {
-        return this.substring(0, index) + string + this.substring(index, this.length)
     }
 }
