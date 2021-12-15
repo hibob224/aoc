@@ -13,10 +13,6 @@ object Day11 {
     private val directory: String
         get() = this::class.java.`package`.name.replace('.', '/')
 
-    private val adjacentMoves = listOf(
-        Point(x = 1, y = 0), Point(x = -1, y = 0), Point(x = 0, y = 1), Point(x = 0, y = -1),
-        Point(x = 1, y = 1), Point(x = 1, y = -1), Point(x = -1, y = 1), Point(x = -1, y = -1)
-    )
     private val input = File("src/main/kotlin/$directory/input.txt").readLines()
         .flatMapIndexed { y: Int, row: String ->
             row.mapIndexed { x, c ->
@@ -58,12 +54,12 @@ object Day11 {
             flashers.forEach { flasher ->
                 flashed += flasher.key
                 // Power up the neighbours
-                adjacentMoves.forEach { move ->
-                    val incrementPos = flasher.key.copy(x = flasher.key.x + move.x, y = flasher.key.y + move.y)
-                    if (incrementPos in cave) { // Just ensure we don't go out of bounds
-                        cave[incrementPos] = cave[incrementPos]!! + 1
+                flasher.key
+                    .getNeighbours(diagonal = true)
+                    .filter { it in cave }
+                    .forEach {
+                        cave[it] = cave[it]!! + 1
                     }
-                }
             }
         }
 

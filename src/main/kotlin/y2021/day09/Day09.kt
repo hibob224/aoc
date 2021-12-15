@@ -13,16 +13,6 @@ object Day09 {
     private val directory: String
         get() = this::class.java.`package`.name.replace('.', '/')
 
-    private val possibleMoves = listOf(
-        Point(x = 0, y = -1),
-        Point(x = 0, y = 1),
-        Point(x = -1, y = 0),
-        Point(x = 1, y = 0)
-    )
-
-    private fun parseInput(): List<String> =
-        File("src/main/kotlin/$directory/input.txt").readLines()
-
     private val input: MutableMap<Point, Int> =
         File("src/main/kotlin/$directory/input.txt")
             .readLines()
@@ -32,12 +22,11 @@ object Day09 {
                 }
             }.toMap().toMutableMap()
 
-
     fun solvePartOne(): Int = input
         .filter {
-            val (point, height) = it
-            possibleMoves.all { move ->
-                height < input.getOrDefault(point.copy(x = point.x + move.x, y = point.y + move.y), Integer.MAX_VALUE)
+            val height = it.value
+            it.key.getNeighbours().all { point ->
+                height < input.getOrDefault(point, Integer.MAX_VALUE)
             }
         }.let {
             it.values.sum() + it.size
@@ -46,9 +35,9 @@ object Day09 {
     fun solvePartTwo(): Int {
         // Get the low points
         val lowPoints = input.filter {
-            val (point, height) = it
-            possibleMoves.all { move ->
-                height < input.getOrDefault(point.copy(x = point.x + move.x, y = point.y + move.y), Integer.MAX_VALUE)
+            val height = it.value
+            it.key.getNeighbours().all { point ->
+                height < input.getOrDefault(point, Integer.MAX_VALUE)
             }
         }.keys
 
@@ -61,12 +50,11 @@ object Day09 {
 
                 // Go through every move from this point, if we haven't seen the new point before and it isn't a ridge
                 // (value 9), then add it to the basinArea and list of locations to check
-                possibleMoves.forEach { move ->
-                    val checkPoint = point.copy(x = point.x + move.x, y = point.y + move.y)
-                    if (checkPoint !in basinArea && input.getOrDefault(checkPoint, 9) != 9) {
+                point.getNeighbours().forEach { neighbour ->
+                    if (neighbour !in basinArea && input.getOrDefault(neighbour, 9) != 9) {
                         // Valid space, expand
-                        basinArea += checkPoint
-                        locations.addFirst(checkPoint)
+                        basinArea += neighbour
+                        locations.addFirst(neighbour)
                     }
                 }
             }
