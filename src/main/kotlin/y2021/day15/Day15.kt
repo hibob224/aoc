@@ -26,44 +26,7 @@ object Day15 {
             }
         }
 
-        val start = Point(0, 0)
-        val target = Point(x = input.first().lastIndex, y = input.lastIndex)
-        val openSet = mutableSetOf(start)
-        val cameFrom = mutableMapOf<Point, Point>()
-        val gScore = mutableMapOf(start to 0)
-        val fScore = mutableMapOf(start to Integer.MAX_VALUE)
-
-        while (openSet.isNotEmpty()) {
-            val current = openSet.minByOrNull { fScore[it]!! }!!
-            if (current == target) {
-                val path = mutableListOf(current)
-                var next = current
-                while (next in cameFrom.keys) {
-                    next = cameFrom[next]!!
-                    path.add(0, next)
-                }
-                return path.subList(fromIndex = 1, toIndex = path.size).sumBy { grid[it]!! }
-            }
-
-            openSet.remove(current)
-
-            current.getNeighbours()
-                .filter { it.x in 0..target.x && it.y in 0..target.y }
-                .forEach { neighbour ->
-                    val tentativeGScore = gScore[current]!! + grid[neighbour]!!
-                    if (tentativeGScore < gScore.getOrDefault(neighbour, Integer.MAX_VALUE)) {
-                        cameFrom[neighbour] = current
-                        gScore[neighbour] = tentativeGScore
-                        fScore[neighbour] = tentativeGScore + neighbour.manhattan(target)
-                        if (neighbour !in openSet) {
-                            openSet += neighbour
-                        }
-                    }
-                }
-
-        }
-
-        throw IllegalStateException("How")
+        return solve(grid)
     }
 
     fun solvePartTwo(): Int {
@@ -101,6 +64,10 @@ object Day15 {
             }
         }
 
+        return solve(grid)
+    }
+
+    private fun solve(grid: Map<Point, Int>): Int {
         val start = Point(0, 0)
         val target = Point(x = grid.maxOf { it.key.x }, y = grid.maxOf { it.key.y })
         val openSet = mutableSetOf(start)
@@ -137,7 +104,6 @@ object Day15 {
                 }
 
         }
-
-        throw IllegalStateException("How")
+        throw IllegalStateException("Didn't find answer")
     }
 }
