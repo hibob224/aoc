@@ -3,7 +3,14 @@ package utils
 import kotlin.math.abs
 import kotlin.math.atan2
 
-open class Point(val x: Int, val y: Int) {
+data class Point(val x: Int, val y: Int) {
+
+    companion object {
+        private val neighbours =
+            mutableListOf(Point(x = 0, y = 1), Point(x = 0, y = -1), Point(x = 1, y = 0), Point(x = -1, y = 0))
+        private val diagonalNeighbours =
+            mutableListOf(Point(x = 1, y = 1), Point(x = -1, y = -1), Point(x = 1, y = -1), Point(x = -1, y = 1))
+    }
 
     fun angle(other: Point) = atan2((other.x - x).toDouble(), (other.y - y).toDouble())
 
@@ -20,24 +27,12 @@ open class Point(val x: Int, val y: Int) {
 
     fun manhattan(other: Point): Int = abs(x - other.x) + abs(y - other.y)
 
-    open fun copy(x: Int = this.x, y: Int = this.y) = Point(x, y)
-
-    override fun equals(other: Any?): Boolean {
-        if (this === other) return true
-        if (javaClass != other?.javaClass) return false
-
-        other as Point
-
-        if (x != other.x) return false
-        if (y != other.y) return false
-
-        return true
-    }
-
-    override fun hashCode(): Int {
-        var result = x
-        result = 31 * result + y
-        return result
+    fun getNeighbours(diagonal: Boolean = false): List<Point> = if (diagonal) {
+        neighbours + diagonalNeighbours
+    } else {
+        neighbours
+    }.map {
+        copy(x = x + it.x, y = y + it.y)
     }
 
     override fun toString(): String = "($x, $y)"
