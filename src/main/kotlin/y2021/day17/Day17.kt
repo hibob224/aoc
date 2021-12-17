@@ -18,48 +18,16 @@ object Day17 {
         File("src/main/kotlin/$directory/input.txt")
             .readLines()
             .first()
+    private val hitTrajectories: Map<Point, Int>
 
-    fun solvePartOne(): Int {
+    init {
+        val hits = mutableMapOf<Point, Int>()
         val (x1, x2, y1, y2) = regex.find(input)!!.groupValues.takeLast(4).map(String::toInt)
-        var highY = Integer.MIN_VALUE
-
         (-1000..1000).forEach { x ->
             (-1000..1000).forEach { y ->
                 var vX = x
                 var vY = y
                 var trajectoryHigh = Integer.MIN_VALUE
-                var probePos = Point(0, 0)
-                var hitTargetArea = false
-
-                while (
-                    probePos.x < maxOf(x1, x2) &&
-                        probePos.y > minOf(y1, y2) &&
-                        !hitTargetArea
-                ) {
-                    probePos = probePos.copy(x = probePos.x + vX, y = probePos.y + vY)
-                    vX = vX.dec().coerceAtLeast(0)
-                    vY -= 1
-                    trajectoryHigh = maxOf(trajectoryHigh, probePos.y)
-                    hitTargetArea = probePos.x in x1..x2 && probePos.y in y1..y2
-                }
-
-                if (hitTargetArea) {
-                    highY = maxOf(highY, trajectoryHigh)
-                }
-            }
-        }
-
-        return highY
-    }
-
-    fun solvePartTwo(): Int {
-        val (x1, x2, y1, y2) = regex.find(input)!!.groupValues.takeLast(4).map(String::toInt)
-        var hits = 0
-
-        (-1000..1000).forEach { x ->
-            (-1000..1000).forEach { y ->
-                var vX = x
-                var vY = y
                 var probePos = Point(0, 0)
                 var hitTargetArea = false
 
@@ -71,15 +39,19 @@ object Day17 {
                     probePos = probePos.copy(x = probePos.x + vX, y = probePos.y + vY)
                     vX = vX.dec().coerceAtLeast(0)
                     vY -= 1
+                    trajectoryHigh = maxOf(trajectoryHigh, probePos.y)
                     hitTargetArea = probePos.x in x1..x2 && probePos.y in y1..y2
                 }
 
                 if (hitTargetArea) {
-                    hits++
+                    hits[Point(x, y)] = trajectoryHigh
                 }
             }
         }
-
-        return hits
+        hitTrajectories = hits
     }
+
+    fun solvePartOne(): Int = hitTrajectories.maxOf { it.value }
+
+    fun solvePartTwo(): Int = hitTrajectories.size
 }
