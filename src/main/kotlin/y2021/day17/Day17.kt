@@ -2,6 +2,7 @@ package y2021.day17
 
 import utils.Point
 import java.io.File
+import kotlin.math.absoluteValue
 
 fun main() {
     println("Part one: ${Day17.solvePartOne()}")
@@ -23,8 +24,8 @@ object Day17 {
     init {
         val hits = mutableMapOf<Point, Int>()
         val (x1, x2, y1, y2) = regex.find(input)!!.groupValues.takeLast(4).map(String::toInt)
-        (-1000..1000).forEach { x ->
-            (-1000..1000).forEach { y ->
+        (0..x2).forEach { x ->
+            (y1..y1.absoluteValue).forEach { y ->
                 var vX = x
                 var vY = y
                 var trajectoryHigh = Integer.MIN_VALUE
