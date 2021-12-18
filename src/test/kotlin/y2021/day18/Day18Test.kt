@@ -13,6 +13,6 @@ internal class Day18Test {
 
     @Test
     fun solvePartTwo() {
-        assertEquals(-1, Day18.solvePartTwo())
+        assertEquals(4647, Day18.solvePartTwo())
     }
 }

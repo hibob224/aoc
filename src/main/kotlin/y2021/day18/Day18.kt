@@ -24,7 +24,6 @@ object Day18 {
             .toMutableList()
 
     fun solvePartOne(): Int {
-        return -1
         val input = parseInput()
         var work = input.first()
 
@@ -49,15 +48,14 @@ object Day18 {
     }
 
     fun solvePartTwo(): Int {
-        val lineCount = parseInput().size
+        val inp = parseInput()
         val magnitudes = mutableListOf<Int>()
 
-        repeat(lineCount) { outerIndex ->
-            repeat(lineCount) inner@{ innerIndex ->
-                if (outerIndex == innerIndex) return@inner
-                val input = parseInput()
-                val inner = input[outerIndex]
-                val outer = input[innerIndex]
+        inp.forEach { outerR ->
+            inp.forEach inner@{ innerR ->
+                if (outerR == innerR) return@inner
+                val inner = innerR.copy()
+                val outer = outerR.copy()
 
                 val work: MutableList<Any> = listOf(outer.toMutableList(), inner.toMutableList()).toMutableList()
                 // Reduce
@@ -75,15 +73,8 @@ object Day18 {
             }
         }
 
-//        input.forEach { outer ->
-//            input.forEach inner@{ inner ->
-//
-//            }
-//        }
-
         return magnitudes.maxOrNull()!!
     }
-    //4087 too low
 
     private fun explode(work: MutableList<Any>, depth: Int = 0): Pair<Int?, Int?>? {
         val (left, right) = work
@@ -141,7 +132,7 @@ object Day18 {
         if (add == 0) {
             return false
         }
-        val (l, r) = work
+        val l = work.first()
 
         if (l is Int) {
             work[0] = l + add
@@ -157,7 +148,7 @@ object Day18 {
         if (add == 0) {
             return false
         }
-        val (l, r) = work
+        val r = work[1]
 
         if (r is Int) {
             work[1] = r + add
@@ -219,5 +210,15 @@ object Day18 {
             right as Int
         }
         return firstVal + secondVal
+    }
+
+    private fun List<*>.copy(): List<*> {
+        return map {
+            if (it is List<*>) {
+                it.copy()
+            } else {
+                it
+            }
+        }
     }
 }
