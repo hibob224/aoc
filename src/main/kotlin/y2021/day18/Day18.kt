@@ -24,40 +24,66 @@ object Day18 {
             .toMutableList()
 
     fun solvePartOne(): Int {
+        return -1
         val input = parseInput()
         var work = input.first()
 
         (1..input.lastIndex).forEach { index ->
             // Add
             work = listOf(work, input[index]).toMutableList()
-//            println(work)
 
             // Reduce
             while (true) {
-//                println("Reduce")
                 // Attempt explode
                 if (explode(work) != null) {
-//                    println("Explode - $work")
                     continue // Exploded an array, loop again from start
                 }
                 if (split(work)) {
-//                    println("Split - $work")
                     continue // Split a number, loop again from start
                 }
                 break
             }
         }
 
-//        println(work)
-
-
-
         return work.magnitude()
     }
 
     fun solvePartTwo(): Int {
-        return -1
+        val lineCount = parseInput().size
+        val magnitudes = mutableListOf<Int>()
+
+        repeat(lineCount) { outerIndex ->
+            repeat(lineCount) inner@{ innerIndex ->
+                if (outerIndex == innerIndex) return@inner
+                val input = parseInput()
+                val inner = input[outerIndex]
+                val outer = input[innerIndex]
+
+                val work: MutableList<Any> = listOf(outer.toMutableList(), inner.toMutableList()).toMutableList()
+                // Reduce
+                while (true) {
+                    // Attempt explode
+                    if (explode(work) != null) {
+                        continue // Exploded an array, loop again from start
+                    }
+                    if (split(work)) {
+                        continue // Split a number, loop again from start
+                    }
+                    break
+                }
+                magnitudes += work.magnitude()
+            }
+        }
+
+//        input.forEach { outer ->
+//            input.forEach inner@{ inner ->
+//
+//            }
+//        }
+
+        return magnitudes.maxOrNull()!!
     }
+    //4087 too low
 
     private fun explode(work: MutableList<Any>, depth: Int = 0): Pair<Int?, Int?>? {
         val (left, right) = work
