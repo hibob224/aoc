@@ -8,11 +8,11 @@ internal class Day21Test {
 
     @Test
     fun solvePartOne() {
-        assertEquals(-1, Day21.solvePartOne())
+        assertEquals(1004670, Day21.solvePartOne())
     }
 
     @Test
     fun solvePartTwo() {
-        assertEquals(-1, Day21.solvePartTwo())
+        assertEquals(492043106122795, Day21.solvePartTwo())
     }
 }
