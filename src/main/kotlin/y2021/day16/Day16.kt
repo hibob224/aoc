@@ -72,7 +72,7 @@ private class Packet(binary: String) {
         }
     }
 
-    fun versionSum(): Int = version + subpackets.sumBy(Packet::versionSum)
+    fun versionSum(): Int = version + subpackets.sumOf(Packet::versionSum)
 
     fun calculate(): Long = when (type) {
         0 -> subpackets.map(Packet::calculate).sum() // Sum

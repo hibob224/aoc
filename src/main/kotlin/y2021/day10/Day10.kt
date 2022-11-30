@@ -34,7 +34,7 @@ object Day10 {
         }
 
         val tagScores = mutableMapOf(')' to 3, ']' to 57, '}' to 1197, '>' to 25137)
-        return illegalChars.sumBy { tagScores[it]!! }
+        return illegalChars.sumOf { tagScores[it]!! }
     }
 
     fun solvePartTwo(): Long {

@@ -84,7 +84,7 @@ object Day15 {
                     next = cameFrom[next]!!
                     path.add(0, next)
                 }
-                return path.subList(fromIndex = 1, toIndex = path.size).sumBy { grid[it]!! }
+                return path.subList(fromIndex = 1, toIndex = path.size).sumOf { grid[it]!! }
             }
 
             openSet.remove(current)

@@ -76,6 +76,7 @@ object Day18 {
         return magnitudes.maxOrNull()!!
     }
 
+    @Suppress("UNCHECKED_CAST")
     private fun explode(work: MutableList<Any>, depth: Int = 0): Pair<Int?, Int?>? {
         val (left, right) = work
 

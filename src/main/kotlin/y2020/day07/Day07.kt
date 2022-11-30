@@ -43,7 +43,7 @@ object Day07 {
             .toSet()
 
     private fun bagContents(target: String): Int =
-        bags.find { it.colour == target }?.contents?.entries?.sumBy {
+        bags.find { it.colour == target }?.contents?.entries?.sumOf {
             it.value + (it.value * bagContents(it.key))
         }.orZero()
 

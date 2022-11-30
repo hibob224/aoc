@@ -33,7 +33,7 @@ object Day08 {
     }
 
     fun solvePartTwo(): Int {
-        return displays.sumBy { it.calculateValue() }
+        return displays.sumOf(Display::calculateValue)
     }
 }
 
