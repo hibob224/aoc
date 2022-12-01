@@ -65,3 +65,14 @@ fun String.hexToBinary(): String = toCharArray().joinToString("") {
         else -> throw IllegalArgumentException("Illegal hex char")
     }
 }
+
+fun <T> List<T?>.groupOnNulls(): List<List<T>> = buildList {
+    var current = mutableListOf<T>()
+    this@groupOnNulls.forEach {
+        it?.let(current::add) ?: run {
+            add(current)
+            current = mutableListOf()
+        }
+    }
+    add(current)
+}

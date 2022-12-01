@@ -1,5 +1,6 @@
 package y2022.day01
 
+import utils.groupOnNulls
 import java.io.File
 
 fun main() {
@@ -15,40 +16,11 @@ object Day01 {
     private val input =
         File("src/main/kotlin/$directory/input.txt")
             .readLines()
+            .map(String::toIntOrNull)
+            .groupOnNulls()
+            .map(List<Int>::sum)
 
-    fun solvePartOne(): Int {
-        val calorieCounts = mutableListOf<Int>()
+    fun solvePartOne(): Int = input.maxOrNull()!!
 
-        var currentCount = 0
-
-        input.forEach {
-            if (it.isEmpty()) {
-                calorieCounts += currentCount
-                currentCount = 0
-            } else {
-                currentCount += it.toInt()
-            }
-        }
-        calorieCounts += currentCount
-
-        return calorieCounts.maxOrNull()!!
-    }
-
-    fun solvePartTwo(): Int {
-        val calorieCounts = mutableListOf<Int>()
-
-        var currentCount = 0
-
-        input.forEach {
-            if (it.isEmpty()) {
-                calorieCounts += currentCount
-                currentCount = 0
-            } else {
-                currentCount += it.toInt()
-            }
-        }
-        calorieCounts += currentCount
-
-        return calorieCounts.sortedDescending().take(3).sum()
-    }
+    fun solvePartTwo(): Int = input.sortedDescending().take(3).sum()
 }
