@@ -17,29 +17,18 @@ object Day03 {
             .readLines()
             .map(String::toList)
 
-    fun solvePartOne(): Int {
-        val dupeItems = mutableListOf<Char>()
-        input.forEach { rucksack ->
-            val compartments = rucksack.chunked(rucksack.size / 2)
-            dupeItems += compartments[0].intersect(compartments[1].toSet())
-        }
+    fun solvePartOne(): Int = input.flatMap { rucksack ->
+        val compartments = rucksack.chunked(rucksack.size / 2)
+        compartments[0].intersect(compartments[1].toSet())
+    }.calculateScore()
 
-        return dupeItems.calculateScore()
-    }
-
-    fun solvePartTwo(): Int {
-        val badges = mutableListOf<Char>()
-
-        input
-            .chunked(3)
-            .forEach { group ->
-                val firstIntersect = group[0].intersect(group[1].toSet())
-                val secondIntersect = group[0].intersect(group[2].toSet())
-                badges += firstIntersect.intersect(secondIntersect)
-            }
-
-        return badges.calculateScore()
-    }
+    fun solvePartTwo(): Int = input
+        .chunked(3)
+        .flatMap { group ->
+            val firstIntersect = group[0].intersect(group[1].toSet())
+            val secondIntersect = group[0].intersect(group[2].toSet())
+            firstIntersect.intersect(secondIntersect)
+        }.calculateScore()
 
     /**
      * Calculate score based on a-z = 1-26 and A-Z = 27-52
