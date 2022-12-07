@@ -21,7 +21,7 @@ object Day06 {
     private fun findMarker(length: Int): Int {
         val marker = input
             .windowed(length)
-            .first { it.groupBy { it }.size == length }
+            .first { it.length == it.toSet().size }
         return input.indexOf(marker) + marker.length
     }
 }
