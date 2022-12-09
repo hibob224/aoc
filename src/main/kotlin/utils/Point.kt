@@ -2,6 +2,8 @@ package utils
 
 import kotlin.math.abs
 import kotlin.math.atan2
+import kotlin.math.pow
+import kotlin.math.sqrt
 
 data class Point(val x: Int, val y: Int) {
 
@@ -26,6 +28,8 @@ data class Point(val x: Int, val y: Int) {
     }
 
     fun manhattan(other: Point): Int = abs(x - other.x) + abs(y - other.y)
+
+    fun euclidean(other: Point): Double = sqrt((other.x - x).toDouble().pow(2) + (other.y - y).toDouble().pow(2))
 
     fun getNeighbours(diagonal: Boolean = false): List<Point> = if (diagonal) {
         neighbours + diagonalNeighbours
