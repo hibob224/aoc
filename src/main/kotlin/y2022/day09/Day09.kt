@@ -13,8 +13,19 @@ object Day09 {
     private val directory: String
         get() = this::class.java.`package`.name.replace('.', '/')
 
-    private val input = File("src/main/kotlin/$directory/input.txt").readLines()
     private val commandRegex = """^(.) (\d+)$""".toRegex()
+    private val input = File("src/main/kotlin/$directory/input.txt")
+        .readLines()
+        .map {
+            val (_, direction, distance) = commandRegex.find(it)!!.groupValues
+            direction to distance
+        }
+    private val directions = mapOf(
+        "U" to Point(0, -1),
+        "D" to Point(0, 1),
+        "L" to Point(-1, 0),
+        "R" to Point(1, 0)
+    )
 
     fun solvePartOne(): Int = fall(2)
 
@@ -22,19 +33,13 @@ object Day09 {
 
     private fun fall(knots: Int): Int {
         var headPosition = Point(0, 0)
-        var ropePositions = Array(knots.dec()) { Point(0, 0) }.toList()
+        var ropePositions = List(knots.dec()) { Point(0, 0) }
         val tailVisited = mutableSetOf(ropePositions.last())
 
         input.forEach {
-            val (_, direction, distance) = commandRegex.find(it)!!.groupValues
-
+            val (direction, distance) = it
             repeat(distance.toInt()) {
-                when (direction) {
-                    "U" -> headPosition = headPosition.copy(y = headPosition.y - 1)
-                    "D" -> headPosition = headPosition.copy(y = headPosition.y + 1)
-                    "L" -> headPosition = headPosition.copy(x = headPosition.x - 1)
-                    "R" -> headPosition = headPosition.copy(x = headPosition.x + 1)
-                }
+                headPosition += directions[direction]!!
                 ropePositions = ropePositions.fold(listOf(headPosition)) { acc, segment ->
                     return@fold if (segment.euclidean(acc.last()) >= 2) {
                         acc + segment.getNeighbours(diagonal = true).minBy { it.euclidean(acc.last()) }

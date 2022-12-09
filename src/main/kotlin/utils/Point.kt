@@ -39,5 +39,7 @@ data class Point(val x: Int, val y: Int) {
         copy(x = x + it.x, y = y + it.y)
     }
 
+    operator fun plus(other: Point) = Point(other.x + x, other.y + y)
+
     override fun toString(): String = "($x, $y)"
 }
