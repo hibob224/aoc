@@ -9,6 +9,8 @@ fun Long?.orZero(): Long = this ?: 0
 
 fun Int.isMultipleOf(x: Int): Boolean = this % x == 0
 
+fun Long.isMultipleOf(x: Long): Boolean = this % x == 0L
+
 val Int.isEven: Boolean
     get() = isMultipleOf(2)
 
