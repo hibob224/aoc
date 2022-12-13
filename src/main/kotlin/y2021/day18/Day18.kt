@@ -2,6 +2,7 @@ package y2021.day18
 
 import kotlinx.serialization.json.*
 import utils.orZero
+import utils.transform
 import java.io.File
 import java.lang.Math.ceil
 
@@ -188,14 +189,6 @@ object Day18 {
             return split(r as MutableList<Any>)
         }
         return false
-    }
-
-    private fun JsonArray.transform(): List<Any> = map {
-        if (it is JsonArray) {
-            it.transform()
-        } else {
-            it.jsonPrimitive.int
-        }
     }
 
     private fun List<*>.magnitude(): Int {

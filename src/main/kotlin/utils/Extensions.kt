@@ -1,5 +1,8 @@
 package utils
 
+import kotlinx.serialization.json.JsonArray
+import kotlinx.serialization.json.int
+import kotlinx.serialization.json.jsonPrimitive
 import java.security.MessageDigest
 import kotlin.math.roundToInt
 
@@ -77,4 +80,12 @@ fun <T> List<T?>.groupOnNulls(): List<List<T>> = buildList {
         }
     }
     add(current)
+}
+
+fun JsonArray.transform(): List<Any> = map {
+    if (it is JsonArray) {
+        it.transform()
+    } else {
+        it.jsonPrimitive.int
+    }
 }
