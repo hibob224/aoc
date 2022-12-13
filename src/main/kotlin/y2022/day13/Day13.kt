@@ -32,24 +32,10 @@ object Day13 {
     }
 
     fun solvePartTwo(): Int {
-        val divider1 = listOf<Any>(listOf(2))
-        val divider2 = listOf<Any>(listOf(6))
-        val packets = buildList<Any> {
-            addAll(input.flatMap { listOf(it.first, it.second) })
-            add(divider1)
-            add(divider2)
-        }
-        val sorted = packets
-            .sortedWith { o1, o2 ->
-                when (compare(o1, o2)) {
-                    Validity.VALID -> -1
-                    Validity.NOT_VALID -> 1
-                    else -> error("Must be valid or invalid")
-                }
-            }
-        val div1Index = sorted.indexOf(divider1).inc()
-        val div2Index = sorted.indexOf(divider2).inc()
-        return div1Index * div2Index
+        val flatPackets = input.flatMap { listOf(it.first, it.second) }
+        val index1 = flatPackets.count { compare(it, listOf<Any>(listOf(2))) == Validity.VALID } + 1
+        val index2 = flatPackets.count { compare(it, listOf<Any>(listOf(6))) == Validity.VALID } + 2
+        return index1 * index2
     }
 
     private fun compare(left: Any?, right: Any?): Validity {
