@@ -1,6 +1,6 @@
 package y2021.day08
 
-import java.io.File
+import utils.getInputFile
 
 fun main() {
     println("Part one: ${Day08.solvePartOne()}")
@@ -9,14 +9,11 @@ fun main() {
 
 object Day08 {
 
-    private val directory: String
-        get() = this::class.java.`package`.name.replace('.', '/')
-
     private val regex =
         """^([a-z]{2,7}) ([a-z]{2,7}) ([a-z]{2,7}) ([a-z]{2,7}) ([a-z]{2,7}) ([a-z]{2,7}) ([a-z]{2,7}) ([a-z]{2,7}) ([a-z]{2,7}) ([a-z]{2,7}) \| ([a-z]{2,7}) ([a-z]{2,7}) ([a-z]{2,7}) ([a-z]{2,7})${'$'}""".toRegex()
 
     private val displays: List<Display> =
-        File("src/main/kotlin/$directory/input.txt")
+        getInputFile(this::class.java.packageName)
             .readLines()
             .map {
                 val match = regex.find(it)!!.groupValues
@@ -50,26 +47,26 @@ data class Display(val inputs: List<CharArray>, val outputs: List<CharArray>) {
 
         val six = inputs.first {
             it.size == 6 &&
-                it.intersect(seven).size == 2
+                    it.intersect(seven).size == 2
         }.toList().toSet()
         val zero = inputs.first {
             it.size == 6 &&
-                it.intersect(four).size == 3 &&
-                it.intersect(seven).size == 3
+                    it.intersect(four).size == 3 &&
+                    it.intersect(seven).size == 3
         }.toList().toSet()
         val two = inputs.first {
             it.size == 5 &&
-                e in it &&
-                it.intersect(six).size == 4
+                    e in it &&
+                    it.intersect(six).size == 4
         }.toList().toSet()
         val three = inputs.first {
             it.size == 5 &&
-                e !in it &&
-                it.intersect(six).size == 4
+                    e !in it &&
+                    it.intersect(six).size == 4
         }.toList().toSet()
         val five = inputs.first {
             it.size == 5 &&
-                it.intersect(six).size == 5
+                    it.intersect(six).size == 5
         }.toList().toSet()
 
         val mappedOutputs = listOf(zero, one, two, three, four, five, six, seven, eight, nine)

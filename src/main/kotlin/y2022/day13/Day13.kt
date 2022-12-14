@@ -2,8 +2,8 @@ package y2022.day13
 
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.jsonArray
+import utils.getInputFile
 import utils.transform
-import java.io.File
 
 fun main() {
     println("Part one: ${Day13.solvePartOne()}")
@@ -12,10 +12,7 @@ fun main() {
 
 object Day13 {
 
-    private val directory: String
-        get() = this::class.java.`package`.name.replace('.', '/')
-
-    private val input = File("src/main/kotlin/$directory/input.txt")
+    private val input = getInputFile(this::class.java.packageName)
         .readText()
         .split("\n\n")
         .map {

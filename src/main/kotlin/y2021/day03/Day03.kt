@@ -1,7 +1,7 @@
 package y2021.day03
 
+import utils.getInputFile
 import utils.orZero
-import java.io.File
 
 fun main() {
     println("Part one: ${Day03.solvePartOne()}")
@@ -10,10 +10,7 @@ fun main() {
 
 object Day03 {
 
-    private val directory: String
-        get() = this::class.java.`package`.name.replace('.', '/')
-
-    private val fileInput = File("src/main/kotlin/$directory/input.txt").readLines()
+    private val fileInput = getInputFile(this::class.java.packageName).readLines()
 
     fun solvePartOne(): Int {
         val threshold = fileInput.size / 2

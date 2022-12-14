@@ -1,6 +1,7 @@
 package y2021.day13
 
 import utils.Point
+import utils.getInputFile
 import java.io.File
 
 fun main() {
@@ -10,11 +11,7 @@ fun main() {
 
 object Day13 {
 
-    private val directory: String
-        get() = this::class.java.`package`.name.replace('.', '/')
-
-    private fun parseInput(): List<String> =
-        File("src/main/kotlin/$directory/input.txt").readLines()
+    private fun parseInput(): List<String> = getInputFile(this::class.java.packageName).readLines()
 
     fun solvePartOne(): Int {
         val input = parseInput()
@@ -55,7 +52,7 @@ object Day13 {
 
         folds.forEach { foldPaper(paper, it) }
 
-        val out = File("src/main/kotlin/$directory/out.txt")
+        val out = File("src/main/kotlin/${this::class.java.packageName.replace('.', '/')}/out.txt")
         out.delete()
         out.writer().use {
             repeat(100) { y ->

@@ -1,6 +1,6 @@
 package y2021.day21
 
-import java.io.File
+import utils.getInputFile
 
 fun main() {
     println("Part one: ${Day21.solvePartOne()}")
@@ -9,12 +9,9 @@ fun main() {
 
 object Day21 {
 
-    private val directory: String
-        get() = this::class.java.`package`.name.replace('.', '/')
-
     private val regex = """^Player \d starting position: (\d+)$""".toRegex()
     private val input: List<Int> =
-        File("src/main/kotlin/$directory/input.txt")
+        getInputFile(this::class.java.packageName)
             .readLines()
             .map {
                 regex.find(it)!!.groupValues[1].toInt()

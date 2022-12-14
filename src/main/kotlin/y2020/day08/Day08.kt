@@ -1,8 +1,6 @@
 package y2020.day08
 
-import java.io.File
-import java.lang.IllegalArgumentException
-import java.lang.IllegalStateException
+import utils.getInputFile
 
 fun main() {
     println("Part one: ${Day08.solvePartOne()}")
@@ -11,12 +9,9 @@ fun main() {
 
 object Day08 {
 
-    private val directory: String
-        get() = this::class.java.`package`.name.replace('.', '/')
-
     private val regex = """^(nop|acc|jmp) ([+-]\d+)${'$'}""".toRegex()
     private fun parseInput(): List<Instruction> =
-        File("src/main/kotlin/$directory/input.txt")
+        getInputFile(this::class.java.packageName)
             .readLines()
             .map { line ->
                 regex.matchEntire(line)?.let {
@@ -48,6 +43,7 @@ object Day08 {
                     acc += instruction.value
                     index++
                 }
+
                 is Instruction.Jump -> index += instruction.value
                 is Instruction.NoOp -> index++
             }
@@ -84,6 +80,7 @@ object Day08 {
                         acc += ins.value
                         i++
                     }
+
                     is Instruction.Jump -> i += ins.value
                     is Instruction.NoOp -> i++
                 }

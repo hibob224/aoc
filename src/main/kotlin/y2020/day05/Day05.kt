@@ -1,8 +1,8 @@
 package y2020.day05
 
+import utils.getInputFile
 import utils.lowerRange
 import utils.upperRange
-import java.io.File
 
 fun main() {
     println("Part one: ${Day05.solvePartOne()}")
@@ -11,11 +11,8 @@ fun main() {
 
 object Day05 {
 
-    private val directory: String
-        get() = this::class.java.`package`.name.replace('.', '/')
-
     private val seats =
-        File("src/main/kotlin/$directory/input.txt")
+        getInputFile(this::class.java.packageName)
             .readLines()
             .map { ticket ->
                 var rowRange = 0..127

@@ -1,6 +1,6 @@
 package y2021.day10
 
-import java.io.File
+import utils.getInputFile
 
 fun main() {
     println("Part one: ${Day10.solvePartOne()}")
@@ -9,11 +9,8 @@ fun main() {
 
 object Day10 {
 
-    private val directory: String
-        get() = this::class.java.`package`.name.replace('.', '/')
-
     private val tagMapping = mapOf('(' to ')', '{' to '}', '[' to ']', '<' to '>')
-    private val input: List<String> = File("src/main/kotlin/$directory/input.txt").readLines()
+    private val input: List<String> = getInputFile(this::class.java.packageName).readLines()
 
     fun solvePartOne(): Int {
         val illegalChars = mutableListOf<Char>()

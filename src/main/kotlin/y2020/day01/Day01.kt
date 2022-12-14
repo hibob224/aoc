@@ -1,6 +1,6 @@
 package y2020.day01
 
-import java.io.File
+import utils.getInputFile
 
 fun main() {
     println("Part one: ${Day01.solvePartOne()}")
@@ -9,11 +9,8 @@ fun main() {
 
 object Day01 {
 
-    private val directory: String
-        get() = this::class.java.`package`.name.replace('.', '/')
-
     private fun parseInput(): List<Int> =
-        File("src/main/kotlin/$directory/input.txt")
+        getInputFile(this::class.java.packageName)
             .readLines()
             .map(String::toInt)
 
@@ -22,7 +19,7 @@ object Day01 {
 
         return input
             .filter { first -> input.any { second -> first + second == 2020 } }
-            .fold(initial = 1) { acc , i -> acc * i }
+            .fold(initial = 1) { acc, i -> acc * i }
             .toString()
     }
 

@@ -1,6 +1,6 @@
 package y2021.day12
 
-import java.io.File
+import utils.getInputFile
 
 fun main() {
     println("Part one: ${Day12.solvePartOne()}")
@@ -9,12 +9,9 @@ fun main() {
 
 object Day12 {
 
-    private val directory: String
-        get() = this::class.java.`package`.name.replace('.', '/')
-
     private val cavePaths = mutableMapOf<String, Set<String>>()
         .apply {
-            File("src/main/kotlin/$directory/input.txt")
+            getInputFile(this@Day12::class.java.packageName)
                 .readLines()
                 .forEach {
                     val (a, b) = it.split("-")
@@ -46,11 +43,11 @@ object Day12 {
             .flatMap { nextNode ->
                 val newVisited = visited + node
                 val visitedSmallTwiceNew = visitedSmallTwice ||
-                    (newVisited + nextNode)
-                        .filter { it.all(Char::isLowerCase) } // Filter to only small caves
-                        .groupingBy { it }
-                        .eachCount() // Get counts of each cave id
-                        .any { it.value == 2 } // Check if any have a count == 2, if we do then no more small caves
+                        (newVisited + nextNode)
+                            .filter { it.all(Char::isLowerCase) } // Filter to only small caves
+                            .groupingBy { it }
+                            .eachCount() // Get counts of each cave id
+                            .any { it.value == 2 } // Check if any have a count == 2, if we do then no more small caves
                 search2(nextNode, newVisited, visitedSmallTwiceNew)
             }
     }

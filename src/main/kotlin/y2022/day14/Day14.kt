@@ -1,7 +1,7 @@
 package y2022.day14
 
 import utils.Point
-import java.io.File
+import utils.getInputFile
 
 fun main() {
     println("Part one: ${Day14.solvePartOne()}")
@@ -10,11 +10,8 @@ fun main() {
 
 object Day14 {
 
-    private val directory: String
-        get() = this::class.java.`package`.name.replace('.', '/')
-
     private val regex = """(\d+,\d+)""".toRegex()
-    private val input = File("src/main/kotlin/$directory/input.txt")
+    private val input = getInputFile(this::class.java.packageName)
         .readLines()
         .map {
             regex.findAll(it)
@@ -27,17 +24,9 @@ object Day14 {
         .flatMap { line ->
             line.windowed(2)
                 .flatMap { (start, end) ->
-                    if (start.x != end.x) {
-                        if (start.x < end.x) {
-                            (start.x..end.x).map { x -> Point(x, start.y) }
-                        } else {
-                            (start.x downTo end.x).map { x -> Point(x, start.y) }
-                        }
-                    } else {
-                        if (start.y < end.y) {
-                            (start.y..end.y).map { y -> Point(start.x, y) }
-                        } else {
-                            (start.y downTo end.y).map { y -> Point(start.x, y) }
+                    (minOf(start.x, end.x)..maxOf(start.x, end.x)).flatMap { x ->
+                        (minOf(start.y, end.y)..maxOf(start.y, end.y)).map { y ->
+                            Point(x, y)
                         }
                     }
                 }

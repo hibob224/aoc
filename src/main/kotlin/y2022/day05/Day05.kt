@@ -1,7 +1,6 @@
 package y2022.day05
 
-import java.io.File
-import kotlin.collections.ArrayDeque
+import utils.getInputFile
 
 fun main() {
     println("Part one: ${Day05.solvePartOne()}")
@@ -9,9 +8,6 @@ fun main() {
 }
 
 object Day05 {
-
-    private val directory: String
-        get() = this::class.java.`package`.name.replace('.', '/')
 
     private val initialStacks = mutableMapOf<Int, ArrayDeque<Char>>()
     private val moves = mutableListOf<Triple<Int, Int, Int>>()
@@ -21,7 +17,7 @@ object Day05 {
     }
 
     private fun parseInput() {
-        var (stackInput, moveInput) = File("src/main/kotlin/$directory/input.txt")
+        var (stackInput, moveInput) = getInputFile(this::class.java.packageName)
             .readText()
             .split("\n\n", limit = 2)
             .map { it.split("\n") }

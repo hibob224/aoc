@@ -1,7 +1,7 @@
 package y2021.day05
 
 import utils.Point
-import java.io.File
+import utils.getInputFile
 
 fun main() {
     println("Part one: ${Day05.solvePartOne()}")
@@ -10,13 +10,9 @@ fun main() {
 
 object Day05 {
 
-    private val directory: String
-        get() = this::class.java.`package`.name.replace('.', '/')
-
-    // 281,389 -> 320,389
     private val parseRegex = """^(\d+),(\d+) -> (\d+),(\d+)""".toRegex()
     private val input: List<Pair<Point, Point>> =
-        File("src/main/kotlin/$directory/input.txt")
+        getInputFile(this::class.java.packageName)
             .readLines()
             .map {
                 val matches = parseRegex.find(it)!!.groupValues

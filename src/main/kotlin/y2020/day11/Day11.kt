@@ -1,6 +1,6 @@
 package y2020.day11
 
-import java.io.File
+import utils.getInputFile
 
 fun main() {
     println("Part one: ${Day11.solvePartOne()}")
@@ -13,15 +13,12 @@ object Day11 {
     private const val OCCUPIED = '#'
     private const val STAIR = '.'
 
-    private val directory: String
-        get() = this::class.java.`package`.name.replace('.', '/')
-
     private val input: List<MutableList<Char>> =
-        File("src/main/kotlin/$directory/test.txt")
+        getInputFile(this::class.java.packageName)
             .readLines()
             .map { it.toCharArray().toMutableList() }
 
-    fun solvePartOne(): String {
+    fun solvePartOne(): Int {
         var grid: List<MutableList<Char>>
         val newGrid = input.map(List<Char>::toMutableList)
 
@@ -29,7 +26,7 @@ object Day11 {
             grid = newGrid.map { it.toMutableList() }
 
             repeat(grid.first().size) { x ->
-                repeat(grid.size) yloop@ { y ->
+                repeat(grid.size) yloop@{ y ->
                     val current = grid[y][x]
                     if (current == STAIR) return@yloop
 
@@ -62,7 +59,7 @@ object Day11 {
 
         } while (grid != newGrid)
 
-        return grid.flatten().count { it == '#' }.toString()
+        return grid.flatten().count { it == '#' }
     }
 
     fun solvePartTwo(): String {

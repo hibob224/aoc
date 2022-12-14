@@ -1,7 +1,7 @@
 package y2022.day11
 
+import utils.getInputFile
 import utils.isMultipleOf
-import java.io.File
 
 fun main() {
     println("Part one: ${Day11.solvePartOne()}")
@@ -10,11 +10,8 @@ fun main() {
 
 object Day11 {
 
-    private val directory: String
-        get() = this::class.java.`package`.name.replace('.', '/')
-
     private val opRegex = """Operation: new = (.+) ([*+]) (.*)""".toRegex()
-    private val input = File("src/main/kotlin/$directory/input.txt")
+    private val input = getInputFile(this::class.java.packageName)
         .readText()
         .split("\n\n")
         .map { it.split("\n") }

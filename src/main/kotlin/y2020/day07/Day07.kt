@@ -1,7 +1,7 @@
 package y2020.day07
 
+import utils.getInputFile
 import utils.orZero
-import java.io.File
 
 fun main() {
     println("Part one: ${Day07.solvePartOne()}")
@@ -10,14 +10,11 @@ fun main() {
 
 object Day07 {
 
-    private val directory: String
-        get() = this::class.java.`package`.name.replace('.', '/')
-
     private val colourRegex = """^(.*) bags? contain.*${'$'}""".toRegex()
     private val contentsRegex = """(\d) (.*?) bag""".toRegex()
 
     private val bags: List<Bag> =
-        File("src/main/kotlin/$directory/input.txt")
+        getInputFile(this::class.java.packageName)
             .readLines()
             .map { line ->
                 val (bagColour) = colourRegex.matchEntire(line)!!.destructured

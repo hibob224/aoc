@@ -1,6 +1,6 @@
 package y2020.day04
 
-import java.io.File
+import utils.getInputFile
 
 fun main() {
     println("Part one: ${Day04.solvePartOne()}")
@@ -9,12 +9,11 @@ fun main() {
 
 object Day04 {
 
-    private val directory: String
-        get() = this::class.java.`package`.name.replace('.', '/')
     private val passports = mutableListOf<Passport>()
 
     init {
-        File("src/main/kotlin/$directory/input.txt").readLines()
+        getInputFile(this::class.java.packageName)
+            .readLines()
             .fold("") { acc, i ->
                 if (i.isEmpty()) {
                     passports.add(parsePassport(acc))

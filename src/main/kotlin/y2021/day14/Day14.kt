@@ -1,6 +1,6 @@
 package y2021.day14
 
-import java.io.File
+import utils.getInputFile
 
 fun main() {
     println("Part one: ${Day14.solvePartOne()}")
@@ -9,11 +9,8 @@ fun main() {
 
 object Day14 {
 
-    private val directory: String
-        get() = this::class.java.`package`.name.replace('.', '/')
-
     private val regex = """^([A-Z]{2}) -> ([A-Z])${'$'}""".toRegex()
-    private val input: List<String> = File("src/main/kotlin/$directory/input.txt").readLines()
+    private val input: List<String> = getInputFile(this::class.java.packageName).readLines()
     private val counts: Map<String, Long> = input
         .first()
         .windowed(2)

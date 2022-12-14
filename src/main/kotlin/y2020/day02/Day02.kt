@@ -1,6 +1,6 @@
 package y2020.day02
 
-import java.io.File
+import utils.getInputFile
 
 fun main() {
     println("Part one: ${Day02.solvePartOne()}")
@@ -9,11 +9,8 @@ fun main() {
 
 object Day02 {
 
-    private val directory: String
-        get() = this::class.java.`package`.name.replace('.', '/')
-
     private val parsedInput: List<PasswordPolicy> =
-        File("src/main/kotlin/$directory/input.txt")
+        getInputFile(this::class.java.packageName)
             .readLines()
             .map(::PasswordPolicy)
 

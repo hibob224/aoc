@@ -1,6 +1,6 @@
 package y2022.day07
 
-import java.io.File
+import utils.getInputFile
 
 fun main() {
     println("Part one: ${Day07.solvePartOne()}")
@@ -9,10 +9,7 @@ fun main() {
 
 object Day07 {
 
-    private val directory: String
-        get() = this::class.java.`package`.name.replace('.', '/')
-
-    private val input = File("src/main/kotlin/$directory/input.txt").readLines()
+    private val input = getInputFile(this::class.java.packageName).readLines()
     private val root = FileSystem.Directory(parent = null, name = "/")
     private val fileRegex = """^(\d+) (.*+)$""".toRegex()
     private val directoryRegex = """^\$ cd (.*+)$""".toRegex()

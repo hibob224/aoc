@@ -1,6 +1,6 @@
 package y2021.day06
 
-import java.io.File
+import utils.getInputFile
 
 fun main() {
     println("Part one: ${Day06.solvePartOne()}")
@@ -9,10 +9,7 @@ fun main() {
 
 object Day06 {
 
-    private val directory: String
-        get() = this::class.java.`package`.name.replace('.', '/')
-
-    private val input: Map<Int, Long> = File("src/main/kotlin/$directory/input.txt")
+    private val input: Map<Int, Long> = getInputFile(this::class.java.packageName)
         .readText()
         .split(",")
         .map(String::toInt)
@@ -39,6 +36,7 @@ object Day06 {
                     newGeneration[6] = newGeneration.getOrDefault(6, 0) + it.value
                     newGeneration[8] = it.value
                 }
+
                 else -> newGeneration[it.key.dec()] = newGeneration.getOrDefault(it.key.dec(), 0) + it.value
             }
         }

@@ -1,7 +1,7 @@
 package y2021.day17
 
 import utils.Point
-import java.io.File
+import utils.getInputFile
 import kotlin.math.absoluteValue
 
 fun main() {
@@ -11,14 +11,8 @@ fun main() {
 
 object Day17 {
 
-    private val directory: String
-        get() = this::class.java.`package`.name.replace('.', '/')
-
     private val regex = """^target area: x=(-?\d+)\.\.(-?\d+), y=(-?\d+)..(-?\d+)${'$'}""".toRegex()
-    private val input =
-        File("src/main/kotlin/$directory/input.txt")
-            .readLines()
-            .first()
+    private val input = getInputFile(this::class.java.packageName).readText()
     private val hitTrajectories: Map<Point, Int>
 
     init {

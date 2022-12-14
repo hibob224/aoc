@@ -3,6 +3,8 @@ package utils
 import kotlinx.serialization.json.JsonArray
 import kotlinx.serialization.json.int
 import kotlinx.serialization.json.jsonPrimitive
+import y2022.day01.Day01
+import java.io.File
 import java.security.MessageDigest
 import kotlin.math.roundToInt
 
@@ -89,3 +91,5 @@ fun JsonArray.transform(): List<Any> = map {
         it.jsonPrimitive.int
     }
 }
+
+fun getInputFile(packageName: String, example: Boolean = false): File = File("src/main/kotlin/${packageName.replace('.', '/')}/${if (example) "example" else "input"}.txt")

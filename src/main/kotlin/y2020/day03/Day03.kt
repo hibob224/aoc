@@ -1,7 +1,7 @@
 package y2020.day03
 
 import utils.Point
-import java.io.File
+import utils.getInputFile
 
 fun main() {
     println("Part one: ${Day03.solvePartOne()}")
@@ -10,15 +10,12 @@ fun main() {
 
 object Day03 {
 
-    private val directory: String
-        get() = this::class.java.`package`.name.replace('.', '/')
-
     private val input: Map<Point, Boolean>
     private val width: Int
     private val height: Int
 
     init {
-        input = File("src/main/kotlin/$directory/input.txt")
+        input = getInputFile(this::class.java.packageName)
             .readLines()
             .also {
                 height = it.size

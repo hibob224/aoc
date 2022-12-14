@@ -1,6 +1,6 @@
 package template
 
-import java.io.File
+import utils.getInputFile
 
 fun main() {
     println("Part one: ${DayXX.solvePartOne()}")
@@ -9,10 +9,7 @@ fun main() {
 
 object DayXX {
 
-    private val directory: String
-        get() = this::class.java.`package`.name.replace('.', '/')
-
-    private val input = File("src/main/kotlin/$directory/input.txt").readLines()
+    private val input = getInputFile(this::class.java.packageName).readLines()
 
     fun solvePartOne(): Int = 0
 

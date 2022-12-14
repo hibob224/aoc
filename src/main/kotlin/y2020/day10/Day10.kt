@@ -1,7 +1,7 @@
 package y2020.day10
 
+import utils.getInputFile
 import utils.orZero
-import java.io.File
 
 fun main() {
     println("Part one: ${Day10.solvePartOne()}")
@@ -10,11 +10,8 @@ fun main() {
 
 object Day10 {
 
-    private val directory: String
-        get() = this::class.java.`package`.name.replace('.', '/')
-
     private val input: List<Int> =
-        File("src/main/kotlin/$directory/input.txt")
+        getInputFile(this::class.java.packageName)
             .readLines()
             .map(String::toInt)
             .sorted()

@@ -1,8 +1,7 @@
 package y2021.day16
 
+import utils.getInputFile
 import utils.hexToBinary
-import java.io.File
-import java.lang.IllegalArgumentException
 
 fun main() {
     println("Part one: ${Day16.solvePartOne()}")
@@ -11,10 +10,7 @@ fun main() {
 
 object Day16 {
 
-    private val directory: String
-        get() = this::class.java.`package`.name.replace('.', '/')
-
-    private val packet = Packet(File("src/main/kotlin/$directory/input.txt").readLines().first().hexToBinary())
+    private val packet = Packet(getInputFile(this::class.java.packageName).readLines().first().hexToBinary())
 
     fun solvePartOne(): Int = packet.versionSum()
 
@@ -25,8 +21,10 @@ private class Packet(binary: String) {
     private val version = binary.take(3).toInt(2)
     private val type: Int = binary.substring(3..5).toInt(2)
     private val subpackets = mutableListOf<Packet>()
+
     // Value stored for 'literal' packets
     private var value = 0L
+
     // Keeps track of how many chars from binary have been consumed by this packet, and all it's subpackets. This allows
     // this packets parent to know where in the binary to start from
     var consumed = 0

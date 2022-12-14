@@ -1,6 +1,6 @@
 package y2022.day10
 
-import java.io.File
+import utils.getInputFile
 
 fun main() {
     println("Part one: ${Day10.solvePartOne()}")
@@ -13,10 +13,7 @@ fun main() {
 
 object Day10 {
 
-    private val directory: String
-        get() = this::class.java.`package`.name.replace('.', '/')
-
-    private val input = File("src/main/kotlin/$directory/input.txt")
+    private val input = getInputFile(this::class.java.packageName)
         .readLines()
         .map { it.split(" ") }
 

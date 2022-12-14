@@ -1,7 +1,6 @@
 package y2020.day09
 
-import java.io.File
-import java.lang.IllegalStateException
+import utils.getInputFile
 
 fun main() {
     val partOne = Day09.solvePartOne()
@@ -11,10 +10,7 @@ fun main() {
 
 object Day09 {
 
-    private val directory: String
-        get() = this::class.java.`package`.name.replace('.', '/')
-
-    private val input = File("src/main/kotlin/$directory/input.txt")
+    private val input = getInputFile(this::class.java.packageName)
         .readLines()
         .map(String::toLong)
 
@@ -42,7 +38,7 @@ object Day09 {
 }
 
 fun <T> elementPairs(arr: List<T>): Sequence<Pair<T, T>> = sequence {
-    for(i in 0 until arr.size-1)
-        for(j in i+1 until arr.size)
+    for (i in 0 until arr.size - 1)
+        for (j in i + 1 until arr.size)
             yield(arr[i] to arr[j])
 }

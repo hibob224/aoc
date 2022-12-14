@@ -1,6 +1,6 @@
 package y2021.day07
 
-import java.io.File
+import utils.getInputFile
 import kotlin.math.absoluteValue
 
 fun main() {
@@ -10,11 +10,8 @@ fun main() {
 
 object Day07 {
 
-    private val directory: String
-        get() = this::class.java.`package`.name.replace('.', '/')
-
     private val input: List<Int> =
-        File("src/main/kotlin/$directory/input.txt")
+        getInputFile(this::class.java.packageName)
             .readText()
             .split(",")
             .map(String::toInt)

@@ -1,6 +1,6 @@
 package y2022.day04
 
-import java.io.File
+import utils.getInputFile
 
 fun main() {
     println("Part one: ${Day04.solvePartOne()}")
@@ -9,12 +9,9 @@ fun main() {
 
 object Day04 {
 
-    private val directory: String
-        get() = this::class.java.`package`.name.replace('.', '/')
-
     private val regex = """^(\d+)-(\d+),(\d+)-(\d+)$""".toRegex()
     private val input =
-        File("src/main/kotlin/$directory/input.txt")
+        getInputFile(this::class.java.packageName)
             .readLines()
             .map {
                 val (_, oneStart, oneEnd, twoStart, twoEnd) = regex.find(it)!!.groupValues

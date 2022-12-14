@@ -1,7 +1,7 @@
 package y2022.day09
 
 import utils.Point
-import java.io.File
+import utils.getInputFile
 
 fun main() {
     println("Part one: ${Day09.solvePartOne()}")
@@ -10,11 +10,8 @@ fun main() {
 
 object Day09 {
 
-    private val directory: String
-        get() = this::class.java.`package`.name.replace('.', '/')
-
     private val commandRegex = """^(.) (\d+)$""".toRegex()
-    private val input = File("src/main/kotlin/$directory/input.txt")
+    private val input = getInputFile(this::class.java.packageName)
         .readLines()
         .map {
             val (_, direction, distance) = commandRegex.find(it)!!.groupValues

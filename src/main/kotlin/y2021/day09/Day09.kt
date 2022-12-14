@@ -1,7 +1,7 @@
 package y2021.day09
 
 import utils.Point
-import java.io.File
+import utils.getInputFile
 
 fun main() {
     println("Part one: ${Day09.solvePartOne()}")
@@ -10,11 +10,8 @@ fun main() {
 
 object Day09 {
 
-    private val directory: String
-        get() = this::class.java.`package`.name.replace('.', '/')
-
     private val input: MutableMap<Point, Int> =
-        File("src/main/kotlin/$directory/input.txt")
+        getInputFile(this::class.java.packageName)
             .readLines()
             .flatMapIndexed { y, row ->
                 row.mapIndexed { x, c ->

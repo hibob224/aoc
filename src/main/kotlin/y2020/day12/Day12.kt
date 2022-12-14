@@ -1,7 +1,7 @@
 package y2020.day12
 
 import utils.Point
-import java.io.File
+import utils.getInputFile
 
 fun main() {
     println("Part one: ${Day12.solvePartOne()}")
@@ -10,12 +10,9 @@ fun main() {
 
 object Day12 {
 
-    private val directory: String
-        get() = this::class.java.`package`.name.replace('.', '/')
-
     private val regex = """^([A-Z])(\d+)$""".toRegex()
     private val input: List<Instruction> =
-        File("src/main/kotlin/$directory/input.txt")
+        getInputFile(this::class.java.packageName)
             .readLines()
             .map { line ->
                 regex.matchEntire(line)?.let {
@@ -57,14 +54,17 @@ object Day12 {
                     Direction.E -> Instruction.East(instruction.value)
                     Direction.W -> Instruction.West(instruction.value)
                 }
+
                 is Instruction.Left -> {
                     direction = direction.rotate(-instruction.value)
                     return
                 }
+
                 is Instruction.Right -> {
                     direction = direction.rotate(instruction.value)
                     return
                 }
+
                 else -> instruction
             }
             location = when (i) {

@@ -1,7 +1,7 @@
 package y2022.day01
 
+import utils.getInputFile
 import utils.groupOnNulls
-import java.io.File
 
 fun main() {
     println("Part one: ${Day01.solvePartOne()}")
@@ -10,11 +10,8 @@ fun main() {
 
 object Day01 {
 
-    private val directory: String
-        get() = this::class.java.`package`.name.replace('.', '/')
-
     private val input =
-        File("src/main/kotlin/$directory/input.txt")
+        getInputFile(this::class.java.packageName)
             .readLines()
             .map(String::toIntOrNull)
             .groupOnNulls()

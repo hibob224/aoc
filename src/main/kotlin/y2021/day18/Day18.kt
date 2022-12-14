@@ -1,9 +1,9 @@
 package y2021.day18
 
 import kotlinx.serialization.json.*
+import utils.getInputFile
 import utils.orZero
 import utils.transform
-import java.io.File
 import java.lang.Math.ceil
 
 fun main() {
@@ -13,11 +13,8 @@ fun main() {
 
 object Day18 {
 
-    private val directory: String
-        get() = this::class.java.`package`.name.replace('.', '/')
-
     private fun parseInput(): MutableList<MutableList<Any>> =
-        File("src/main/kotlin/$directory/input.txt")
+        getInputFile(this::class.java.packageName)
             .readLines()
             .map {
                 Json.parseToJsonElement(it).jsonArray.transform().toMutableList()
