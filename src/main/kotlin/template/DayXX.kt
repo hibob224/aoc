@@ -11,7 +11,7 @@ object DayXX {
 
     private val input = getInputFile(this::class.java.packageName).readLines()
 
-    fun solvePartOne(): Int = 0
+    fun solvePartOne(): Long = 0
 
-    fun solvePartTwo(): Int = 0
+    fun solvePartTwo(): Long = 0
 }
