@@ -31,21 +31,22 @@ object Day04 {
     }
 
     fun solvePartTwo(): Int {
-        return input.size + input.flatMap { it.getCards() }.size
+        val cards = input.map {
+            it.copy(
+                wonCardIndexes = if (it.matches() > 0) input.subList(it.cardIndex.inc(), it.cardIndex + it.matches().inc()).map(ScratchCard::cardIndex) else emptyList()
+            )
+        }
+        return cards.flatMap { cards.matches(cards[it.cardIndex]) }.size
     }
 
-    private fun ScratchCard.getCards(): List<ScratchCard> =
-        if (matches() > 0) {
-            val wonCopies = input.subList(cardIndex.inc(), cardIndex + matches().inc())
-            wonCopies + wonCopies.flatMap { it.getCards() }
-        } else {
-            emptyList()
-        }
+    private fun List<ScratchCard>.matches(index: ScratchCard): List<ScratchCard> =
+        index.wonCardIndexes.flatMap { matches(this[it]) } + index
 
     data class ScratchCard(
         val cardIndex: Int,
         private val winningNumbers: List<Int>,
         private val numbers: List<Int>,
+        val wonCardIndexes: List<Int> = emptyList(),
     ) {
         fun matches(): Int = numbers.count { it in winningNumbers }
     }
