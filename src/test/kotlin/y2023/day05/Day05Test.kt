@@ -1,5 +1,6 @@
 package y2023.day05
 
+import kotlinx.coroutines.runBlocking
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 
@@ -11,6 +12,6 @@ internal class Day05Test {
 
     @Test
     fun solvePartTwo() {
-        assertEquals(0, Day05.solvePartTwo())
+        assertEquals(125742456, runBlocking { Day05.solvePartTwo() })
     }
 }
