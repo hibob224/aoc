@@ -10,12 +10,12 @@ fun main() {
 object Day06 {
 
     private val input =
-        getInputFile(this::class.java.packageName, example = true)
+        getInputFile(this::class.java.packageName, example = false)
             .readLines()
             .joinToString(separator = "")
             .let {
                 val regex = """(\d+)""".toRegex()
-                val matches = regex.findAll(it).toList().map { it.value.toInt() }
+                val matches = regex.findAll(it).toList().map { it.value.toLong() }
                 val raceTimes = matches.subList(0, matches.size / 2)
                 val raceDistances = matches.subList(matches.size / 2, matches.size)
                 raceTimes.zip(raceDistances, ::Race)
@@ -24,19 +24,25 @@ object Day06 {
     fun solvePartOne(): Int {
         return input
             .map { race ->
-                (0..race.time)
-                    .map { speed ->
-                        val timeLeft = race.time - speed
-                        timeLeft * speed
-                    }
-                    .count { it > race.maxDistance }
+                solve(race.time, race.maxDistance)
             }.reduce { acc, i -> acc * i }
     }
 
-    fun solvePartTwo(): Long = 0
+    fun solvePartTwo(): Int {
+        val time = input.joinToString(separator = "") { it.time.toString() }.toLong()
+        val maxDistance = input.joinToString(separator = "") { it.maxDistance.toString() }.toLong()
+        return solve(time, maxDistance)
+    }
+
+    private fun solve(time: Long, distance: Long): Int =
+        (0..time)
+            .count { speed ->
+                val timeLeft = time - speed
+                timeLeft * speed > distance
+            }
 
     data class Race(
-        val time: Int,
-        val maxDistance: Int,
+        val time: Long,
+        val maxDistance: Long,
     )
 }
