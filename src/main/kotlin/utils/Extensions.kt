@@ -95,4 +95,10 @@ fun String.replaceAll(replacements: List<Pair<String, String>>): String = replac
     acc.replace(replacement.first, replacement.second)
 }
 
+fun gcd(x: Long, y: Long): Long = if (y == 0L) x else gcd(y, x % y)
+fun List<Long>.gcd(): Long = reduce { x, y -> gcd(x, y) }
+
+fun lcm(x: Long, y: Long): Long = x * (y / gcd(x, y))
+fun List<Long>.lcm(): Long = reduce { x, y -> lcm(x, y) }
+
 fun getInputFile(packageName: String, example: Boolean = false): File = File("src/main/kotlin/${packageName.replace('.', '/')}/${if (example) "example" else "input"}.txt")
