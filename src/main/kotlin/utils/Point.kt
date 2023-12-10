@@ -14,6 +14,15 @@ data class Point(val x: Int, val y: Int) {
             mutableListOf(Point(x = 1, y = 1), Point(x = -1, y = -1), Point(x = 1, y = -1), Point(x = -1, y = 1))
     }
 
+    val n: Point
+        get() = this + Point(0, -1)
+    val e: Point
+        get() = this + Point(1, 0)
+    val s: Point
+        get() = this + Point(0, 1)
+    val w: Point
+        get() = this + Point(-1, 0)
+
     fun angle(other: Point) = atan2((other.x - x).toDouble(), (other.y - y).toDouble())
 
     fun degrees(other: Point): Double {
