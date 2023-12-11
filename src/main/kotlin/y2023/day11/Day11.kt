@@ -18,7 +18,11 @@ object Day11 {
                 line.mapIndexed { x, c -> Point(x, y) to c }
             }.toMap()
 
-    fun solvePartOne(): Long {
+    fun solvePartOne(): Long = solve(1)
+
+    fun solvePartTwo(): Long = solve(999_999)
+
+    private fun solve(multiplier: Long): Long {
         val maxY = input.maxOf { it.key.y }
         val maxX = input.maxOf { it.key.x }
 
@@ -29,19 +33,16 @@ object Day11 {
             input.filterKeys { it.x == x }.all { it.value == '.' }
         }
 
-        val galaxies = input
+        return input
             .filterValues { it == '#' }
             .keys
             .combinations(2)
             .map {
                 val (pointA, pointB) = it
                 val manhattan = pointA.manhattan(pointB)
-                val extraRows = emptyRows.count { it in minOf(pointA.y, pointB.y)..maxOf(pointA.y, pointB.y) }
-                val extraCols = emptyCols.count { it in minOf(pointA.x, pointB.x)..maxOf(pointA.x, pointB.x) }
-                manhattan + extraRows + extraCols
-            }
-        return galaxies.sum().toLong()
+                val extraRows = emptyRows.count { it in minOf(pointA.y, pointB.y)..maxOf(pointA.y, pointB.y) }.toLong()
+                val extraCols = emptyCols.count { it in minOf(pointA.x, pointB.x)..maxOf(pointA.x, pointB.x) }.toLong()
+                manhattan + (extraRows * multiplier) + (extraCols * multiplier)
+            }.sum()
     }
-
-    fun solvePartTwo(): Long = 0
 }
