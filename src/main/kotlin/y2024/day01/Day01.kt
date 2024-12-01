@@ -10,27 +10,31 @@ fun main() {
 
 object Day01 {
 
-    private val input = getInputFile(this::class.java.packageName)
-        .useLines {
-            val leftList = mutableListOf<Long>()
-            val rightList = mutableListOf<Long>()
-            it.forEach {
-                val (left, right) = it.split("   ")
-                leftList += left.toLong()
-                rightList += right.toLong()
+    private val firstList: List<Long>
+    private val secondList: List<Long>
+
+    init {
+        val (first, second) = getInputFile(this::class.java.packageName)
+            .readLines()
+            .map {
+                val first = it.substringBefore(' ').toLong()
+                val second = it.substringAfterLast(' ').toLong()
+                first to second
             }
-            leftList.sorted() to rightList.sorted()
-        }
+            .unzip()
+        firstList = first.sorted()
+        secondList = second.sorted()
+    }
 
     fun solvePartOne(): Long {
-        return input.first
-            .zip(input.second)
+        return firstList
+            .zip(secondList)
             .sumOf { (it.first - it.second).absoluteValue }
     }
 
     fun solvePartTwo(): Long {
-        return input.first.fold(0) { acc, i ->
-            acc + (i * input.second.count { it == i })
+        return firstList.fold(0) { acc, i ->
+            acc + (i * secondList.count { it == i })
         }
     }
 }
