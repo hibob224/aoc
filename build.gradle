@@ -1,6 +1,6 @@
 plugins {
-    id 'org.jetbrains.kotlin.jvm' version '1.9.21'
-    id 'org.jetbrains.kotlin.plugin.serialization' version '1.9.21'
+    id 'org.jetbrains.kotlin.jvm' version '2.0.21'
+    id 'org.jetbrains.kotlin.plugin.serialization' version '2.0.21'
 }
 
 group 'com.galajeu'
@@ -11,10 +11,10 @@ repositories {
 }
 
 dependencies {
-    implementation "org.jetbrains.kotlinx:kotlinx-serialization-json:1.4.1"
+    implementation "org.jetbrains.kotlinx:kotlinx-serialization-json:1.7.3"
     implementation "org.jetbrains.kotlin:kotlin-stdlib"
-    implementation 'org.junit.jupiter:junit-jupiter:5.4.2'
-    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.8.0-RC"
+    implementation 'org.junit.jupiter:junit-jupiter:5.11.3'
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.9.0"
 }
 
 test {
@@ -22,10 +22,14 @@ test {
 }
 
 compileKotlin {
-    kotlinOptions.jvmTarget = "1.8"
-    kotlinOptions.languageVersion = "1.9"
+    kotlinOptions {
+        jvmTarget = "11"
+        languageVersion = "2.0"
+    }
 }
 
 compileTestKotlin {
-    kotlinOptions.jvmTarget = "1.8"
+    kotlinOptions {
+        jvmTarget = "11"
+    }
 }
