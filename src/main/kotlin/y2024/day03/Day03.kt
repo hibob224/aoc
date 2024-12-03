@@ -20,13 +20,14 @@ object Day03 {
 
     fun solvePartTwo(): Int {
         return input
-            .let { """(do\(\)|don't\(\)|mul\((\d{1,3}),(\d{1,3})\))""".toRegex().findAll(it) }
+            .let { """do(?:n't)?\(\)|mul\((\d{1,3}),(\d{1,3})\)""".toRegex().findAll(it) }
             .fold(true to 0) { acc, match ->
-                when (val m = match.value) {
+                val (_, param1, param2) = match.groupValues
+                when (match.value) {
                     "do()" -> true to acc.second
                     "don't()" -> false to acc.second
                     else -> if (acc.first) {
-                        true to acc.second + (match.groupValues[2].toInt() * match.groupValues[3].toInt())
+                        true to acc.second + (param1.toInt() * param2.toInt())
                     } else {
                         acc
                     }
