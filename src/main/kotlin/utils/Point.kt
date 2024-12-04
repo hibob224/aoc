@@ -8,9 +8,9 @@ import kotlin.math.sqrt
 data class Point(val x: Int, val y: Int) {
 
     companion object {
-        private val neighbours =
+        val neighbourDirections =
             mutableListOf(Point(x = 0, y = 1), Point(x = 0, y = -1), Point(x = 1, y = 0), Point(x = -1, y = 0))
-        private val diagonalNeighbours =
+        val diagonalNeighbourDirections =
             mutableListOf(Point(x = 1, y = 1), Point(x = -1, y = -1), Point(x = 1, y = -1), Point(x = -1, y = 1))
     }
 
@@ -41,9 +41,9 @@ data class Point(val x: Int, val y: Int) {
     fun euclidean(other: Point): Double = sqrt((other.x - x).toDouble().pow(2) + (other.y - y).toDouble().pow(2))
 
     fun getNeighbours(diagonal: Boolean = false): List<Point> = if (diagonal) {
-        neighbours + diagonalNeighbours
+        neighbourDirections + diagonalNeighbourDirections
     } else {
-        neighbours
+        neighbourDirections
     }.map {
         copy(x = x + it.x, y = y + it.y)
     }
@@ -51,4 +51,23 @@ data class Point(val x: Int, val y: Int) {
     operator fun plus(other: Point) = Point(other.x + x, other.y + y)
 
     override fun toString(): String = "($x, $y)"
+}
+
+fun <T> List<String>.toPointGrid(mapper: (Char) -> T): Map<Point, T> =
+    flatMapIndexed { y, line ->
+        line.mapIndexed { x, c -> Point(x, y) to mapper(c) }
+    }.toMap()
+
+fun List<String>.toPointGrid(): Map<Point, Char> = toPointGrid { it }
+
+fun <T> Map<Point, T>.traverse(block: (Point, T?) -> Unit) {
+    val width = maxOf { it.key.x }
+    val height = maxOf { it.key.y }
+
+    repeat(width.inc()) { x ->
+        repeat(height.inc()) { y ->
+            val point = Point(x, y)
+            block(point, get(point))
+        }
+    }
 }
