@@ -20,3 +20,8 @@ jobs:
           distribution: 'temurin'
       - name: Test with Gradle
         run: ./gradlew test
+      - name: Dashboard
+        uses: test-summary/action@v2.4
+        with:
+          paths: "build/test-results/test/TEST-*.xml"
+        if: always()
