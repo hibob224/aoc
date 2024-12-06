@@ -53,12 +53,15 @@ data class Point(val x: Int, val y: Int) {
     override fun toString(): String = "($x, $y)"
 }
 
-fun <T> List<String>.toPointGrid(mapper: (Char) -> T): Map<Point, T> =
+fun <T> List<String>.toPointGrid(mapper: (Point, Char) -> T): Map<Point, T> =
     flatMapIndexed { y, line ->
-        line.mapIndexed { x, c -> Point(x, y) to mapper(c) }
+        line.mapIndexed { x, c ->
+            val pos = Point(x, y)
+            pos to mapper(pos, c)
+        }
     }.toMap()
 
-fun List<String>.toPointGrid(): Map<Point, Char> = toPointGrid { it }
+fun List<String>.toPointGrid(): Map<Point, Char> = toPointGrid { _, c -> c }
 
 fun <T> Map<Point, T>.traverse(block: (Point, T?) -> Unit) {
     val width = maxOf { it.key.x }
