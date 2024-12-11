@@ -13,81 +13,32 @@ object Day11 {
     private val input = getInputFile(this::class.java.packageName, example = false)
         .readText()
         .split(' ')
-    private val cache = mutableMapOf<Long, List<Long>>()
+        .map { it.toLong() }
+        .groupingBy { it }
+        .eachCount()
+        .mapValues { it.value.toLong() } // StoneValue to Count
 
-    fun solvePartOne(): Int {
-        var blinks: List<String> = input.toMutableList()
-        repeat(25) {
-            blinks = blink(blinks)
-        }
-        return blinks.size
-    }
+    fun solvePartOne(): Long = solve(25, input)
 
-    fun solvePartTwo(): Long {
-        val groupedInput = input
-            .map { it.toLong() }
-            .groupingBy { it }
-            .eachCount()
-            .mapValues { it.value.toLong() }
+    fun solvePartTwo(): Long = solve(75, input)
 
-        return (0 until 75).fold(groupedInput) { stones, _ ->
+    private fun solve(blinks: Int, stones: Map<Long, Long>) =
+        (0 until blinks).fold(stones) { stones, _ ->
             stones
                 .flatMap { (stone, count) ->
-                    blink(stone).map { transform -> transform to count }
+                    blink(stone).map { transform -> transform to count } // Blink, then map to StoneValue to count (using original stones count)
                 }
-                .groupingBy { it.first }
-                .fold(0L) { acc, (_, count) -> acc + count }
+                .groupingBy { it.first } // Group up by stone values
+                .fold(0L) { acc, (_, count) -> acc + count } // Sum up each stones count, resulting in StoneValue to count
                 .toMutableMap()
-        }.values.sum()
-    }
+        }.values.sum() // Sum up how many stones we have
 
-    private fun blink(stone: Long) = cache.computeIfAbsent(stone) {
-        when {
-            it == 0L -> listOf(1L)
-            it.toString().length.isEven -> listOf(
-                it.toString().substring(0, it.toString().length / 2).toLong(),
-                it.toString().substring(it.toString().length / 2).toLong(),
-            )
-
-            else -> listOf(it * 2024)
-        }
-    }
-
-    private fun blink(stone: String) = buildList {
-        when {
-            stone == "0" -> add("1")
-            stone.length.isEven -> {
-                val split = listOf(
-                    stone.substring(0, stone.length / 2),
-                    stone.substring(stone.length / 2).toLong().toString(),
-                )
-                addAll(split)
-            }
-
-            else -> add(stone.toLong().times(2024).toString())
-        }
-    }
-
-    private fun blink(input: List<String>) = buildList {
-        input.forEach { stone ->
-//                println("Handling $stone")
-            when {
-                stone == "0" -> {
-//                        println("0 -> 1")
-                    add("1")
-                }
-
-                stone.length.isEven -> {
-                    val split = listOf(
-                        stone.substring(0, stone.length / 2),
-                        stone.substring(stone.length / 2).toLong().toString(),
-                    )
-//                        println(split)
-                    addAll(split)
-                }
-
-                else -> add(stone.toLong().times(2024).toString())
-            }
-        }
+    private fun blink(it: Long) = when {
+        it == 0L -> listOf(1L)
+        it.toString().length.isEven -> listOf(
+            it.toString().substring(0, it.toString().length / 2).toLong(),
+            it.toString().substring(it.toString().length / 2).toLong(),
+        )
+        else -> listOf(it * 2024)
     }
 }
