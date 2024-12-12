@@ -14,58 +14,13 @@ object Day12 {
     private val input = getInputFile(this::class.java.packageName, example = false)
         .readLines()
         .toPointGrid()
-    private val width = input.maxOf { it.key.x }
-    private val height = input.maxOf { it.key.y }
+    private val groups = mutableListOf<Set<Pair<Point, Cell>>>()
 
-    fun solvePartOne(): Int {
+    init {
         val visited = mutableSetOf<Point>()
-        val groups = mutableListOf<Triple<Char, Int, Int>>()
 
-        (0..height).forEach { y ->
-            (0..width).forEach xloop@{ x ->
-                val point = Point(x, y)
-                val group = input[point]
-                if (point in visited || group == null) return@xloop
-                visited += point
-
-                var fenceCount = 0
-                val area = buildSet {
-                    val expanse = mutableSetOf(point)
-                    add(point)
-
-                    while (expanse.isNotEmpty()) {
-                        val (sameGroup, boundary) = expanse
-                            .first()
-                            .also(expanse::remove)
-                            .getNeighbours()
-                            .partition { input[it] == group }
-                        addAll(sameGroup.filter { it !in visited })
-                        expanse.addAll(sameGroup.filter { it !in visited })
-                        visited.addAll(sameGroup)
-                        fenceCount += boundary.size
-                    }
-                }.size
-                groups.add(Triple(group, area, fenceCount))
-            }
-        }
-
-        return groups.sumOf { (_, area, fences) -> area * fences }
-    }
-
-    data class Cell(
-        val value: Char,
-        val boundaryN: Boolean = false,
-        val boundaryE: Boolean = false,
-        val boundaryS: Boolean = false,
-        val boundaryW: Boolean = false,
-    )
-
-    fun solvePartTwo(): Int {
-        val visited = mutableSetOf<Point>()
-        val groups = mutableListOf<Pair<Char, Set<Pair<Point, Cell>>>>()
-
-        input.forEach xloop@{ (point, group) ->
-            if (point in visited) return@xloop
+        input.forEach { (point, group) ->
+            if (point in visited) return@forEach
             visited += point
 
             val area = buildSet {
@@ -78,11 +33,10 @@ object Day12 {
                         .partition { input[it] == group }
 
                     val cell = Cell(
-                        value = group,
-                        boundaryN = expansion.n in boundary,
-                        boundaryE = expansion.e in boundary,
-                        boundaryS = expansion.s in boundary,
-                        boundaryW = expansion.w in boundary,
+                        boundN = expansion.n in boundary,
+                        boundE = expansion.e in boundary,
+                        boundS = expansion.s in boundary,
+                        boundW = expansion.w in boundary,
                     )
 
                     add(expansion to cell)
@@ -90,38 +44,62 @@ object Day12 {
                     visited.addAll(sameGroup)
                 }
             }
-            groups.add(group to area)
+            groups.add(area)
         }
+    }
 
-        return groups.sumOf { (_, points) ->
+    fun solvePartOne(): Int = groups.sumOf { points ->
+        points.size * points.sumOf { it.second.fenceCount }
+    }
+
+    fun solvePartTwo(): Int {
+        return groups.sumOf { points ->
             val v = points
-                .sortedBy { it.first.y }
-                .groupBy { it.first.x }
+                .sortedBy { it.first.y } // Sort in Y order, so it's easier to check for consecutives later
+                .groupBy { it.first.x } // Group by X values, then we can count consecutive sections in each X column
             val h = points
-                .sortedBy { it.first.x }
-                .groupBy { it.first.y }
+                .sortedBy { it.first.x } // Sort in X order
+                .groupBy { it.first.y } // Group by Y
 
             val hSides = h.entries
                 .sumOf {
-                    getConsecutiveNumbers(it.value.filter { it.second.boundaryN }.map { it.first.x }).size +
-                        getConsecutiveNumbers(it.value.filter { it.second.boundaryS }.map { it.first.x }).size
+                    // X coord of all horizontal north bounds
+                    val nBoundaries = it.value.filter { cell -> cell.second.boundN }.map { cell -> cell.first.x }
+                    // X coord of all horizontal south bounds
+                    val sBoundaries = it.value.filter { cell -> cell.second.boundS }.map { cell -> cell.first.x }
+                    // Find all the consecutive north + south ranges
+                    getConsecutiveNumbers(nBoundaries).size + getConsecutiveNumbers(sBoundaries).size
                 }
             val vSides = v.entries
                 .sumOf {
-                    getConsecutiveNumbers(it.value.filter { it.second.boundaryE }.map { it.first.y }).size +
-                        getConsecutiveNumbers(it.value.filter { it.second.boundaryW }.map { it.first.y }).size
+                    // Y coord of all horizontal east bounds
+                    val eBoundaries = it.value.filter { cell -> cell.second.boundE }.map { cell -> cell.first.y }
+                    // Y coord of all horizontal west bounds
+                    val wBoundaries = it.value.filter { cell -> cell.second.boundW }.map { cell -> cell.first.y }
+                    // Find all the consecutive east + west ranges
+                    getConsecutiveNumbers(eBoundaries).size + getConsecutiveNumbers(wBoundaries).size
                 }
 
             points.size * (hSides + vSides)
         }
     }
 
-    fun getConsecutiveNumbers(srcList: List<Int>): List<List<Int>> {
+    private fun getConsecutiveNumbers(srcList: List<Int>): List<List<Int>> {
         return srcList.fold(mutableListOf<MutableList<Int>>()) { acc, i ->
             if (acc.isEmpty() || acc.last().last() != i - 1) {
                 acc.add(mutableListOf(i))
             } else acc.last().add(i)
             acc
         }
+    }
+
+    data class Cell(
+        val boundN: Boolean = false,
+        val boundE: Boolean = false,
+        val boundS: Boolean = false,
+        val boundW: Boolean = false,
+    ) {
+        val fenceCount: Int
+            get() = listOf(boundN, boundE, boundS, boundW).count { it }
     }
 }
