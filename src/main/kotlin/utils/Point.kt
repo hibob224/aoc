@@ -76,3 +76,16 @@ fun <T> Map<Point, T>.traverse(block: (Point, T?) -> Unit) {
         }
     }
 }
+
+fun pointsInArea(point1: Point, point2: Point): List<Point> {
+    val (minY, maxY) = listOf(point1.y, point2.y).sorted()
+    val (minX, maxX) = listOf(point1.x, point2.x).sorted()
+
+    return buildList {
+        (minY..maxY).forEach { y ->
+            (minX..maxX).forEach { x ->
+                add(Point(x, y))
+            }
+        }
+    }
+}
