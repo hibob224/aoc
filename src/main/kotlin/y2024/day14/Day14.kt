@@ -2,8 +2,8 @@ package y2024.day14
 
 import utils.Point
 import utils.getInputFile
+import utils.product
 import java.io.File
-import kotlin.math.absoluteValue
 
 fun main() {
     println("Part one: " + Day14.solvePartOne())
@@ -12,25 +12,20 @@ fun main() {
 
 object Day14 {
 
-    //p=0,4 v=3,-3
-    private val example = false
-
     private val parse = """^p=(-?\d+),(-?\d+) v=(-?\d+),(-?\d+)$""".toRegex()
-    private val input = getInputFile(this::class.java.packageName, example = example)
+    private val input = getInputFile(this::class.java.packageName)
         .readLines()
         .map {
             val (px, py, vx, vy) = parse.find(it)!!.destructured
             Point(px.toInt(), py.toInt()) to Point(vx.toInt(), vy.toInt())
         }
-    private val width = if (example) 11 else 101
-    private val height = if (example) 7 else 103
+    private const val width = 101
+    private const val height = 103
 
     fun solvePartOne(): Int {
         val endPositions = input
             .map { (start, velocity) ->
-                (0 until 100).fold(start) { acc, _ ->
-                    move(acc, velocity)
-                }
+                move(start, velocity, 100)
             }.groupingBy { it }.eachCount()
 
         val qx = width.dec() / 2
@@ -44,38 +39,27 @@ object Day14 {
             if (pos.x > qx && pos.y > qy) quadrants[3] += c
         }
 
-        return quadrants.fold(1) { acc, i -> acc * i}
+        return quadrants.product()
     }
 
-    fun solvePartTwo(): Long {
-        val out = (0 until 8050).fold(input) { acc, i ->
-            acc.map { (pos, v) ->
-                move(pos, v) to v
-            }
-        }
-        printOutput(out.map { it.first }.toSet())
-        return 8050
+    fun solvePartTwo(): Int {
+        return generateSequence(input) { bots ->
+            // Assuming that if all bots are in a unique position, we probably have the tree
+            if (bots.groupingBy { it.first }.eachCount().count() == input.size) return@generateSequence null
+            bots.map { (pos, v) -> move(pos, v, 1) to v }
+        }.also {
+            printOutput(it.last().map(Pair<Point, Point>::first).toSet())
+        }.count().dec() // -1 to account for the initial state
     }
 
-    private fun move(pos: Point, v: Point): Point {
-        val newX = if (pos.x + v.x < 0) {
-            width - (v.x.absoluteValue - pos.x)
-        } else if (pos.x + v.x >= width) {
-            v.x - (width - pos.x)
-        } else {
-            pos.x + v.x
-        }
-        val newY = if (pos.y + v.y < 0) {
-            height - (v.y.absoluteValue - pos.y)
-        } else if (pos.y + v.y >= height) {
-            v.y - (height - pos.y)
-        } else {
-            pos.y + v.y
-        }
-        return Point(newX, newY)
+    private fun move(pos: Point, v: Point, moves: Int): Point {
+        val newX = (pos.x + v.x * moves) % width
+        val newY = (pos.y + v.y * moves) % height
+        return Point(newX + if (newX < 0) width else 0, newY + if (newY < 0) height else 0)
     }
 
     private fun printOutput(robots: Set<Point>) {
+        if (System.getenv("CI").toBoolean()) return
         val out = buildString {
             (0 until height).forEach { y ->
                 (0 until width).forEach { x ->
