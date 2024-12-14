@@ -2,7 +2,7 @@ package y2024.day14
 
 import utils.Point
 import utils.getInputFile
-import utils.pointsInArea
+import java.io.File
 import kotlin.math.absoluteValue
 
 fun main() {
@@ -25,49 +25,57 @@ object Day14 {
     private val width = if (example) 11 else 101
     private val height = if (example) 7 else 103
 
-    fun solvePartOne(): Long {
-        val endPositions = input.map { (start, velocity) ->
-            (0 until 100).fold(start) { acc, _ ->
-                val newX = if (acc.x + velocity.x < 0) {
-                    width - (velocity.x.absoluteValue - acc.x)
-                } else if (acc.x + velocity.x >= width) {
-                    velocity.x - (width - acc.x)
-                } else {
-                    acc.x + velocity.x
+    fun solvePartOne(): Int {
+        val endPositions = input
+            .map { (start, velocity) ->
+                (0 until 100).fold(start) { acc, _ ->
+                    move(acc, velocity)
                 }
-                val newY = if (acc.y + velocity.y < 0) {
-                    height - (velocity.y.absoluteValue - acc.y)
-                } else if (acc.y + velocity.y >= height) {
-                    velocity.y - (height - acc.y)
-                } else {
-                    acc.y + velocity.y
-                }
-
-                Point(newX, newY)
-            }
-        }.groupingBy { it }.eachCount()
+            }.groupingBy { it }.eachCount()
 
         val qx = width.dec() / 2
         val qy = height.dec() / 2
-        val q1 = pointsInArea(Point(0, 0), Point(qx - 1, qy - 1))
-        val q2 = pointsInArea(Point(qx + 1, 0), Point(width - 1, qy - 1))
-        val q3 = pointsInArea(Point(0, qy + 1), Point(qx - 1, height - 1))
-        val q4 = pointsInArea(Point(qx + 1, qy + 1), Point(width - 1, height - 1))
-        val quadrants = listOf(q1, q2, q3, q4)
+        val quadrants = MutableList(4) { 0 }
 
-        printOutput(endPositions.keys, 1)
+        endPositions.forEach { (pos, c) ->
+            if (pos.x < qx && pos.y < qy) quadrants[0] += c
+            if (pos.x > qx && pos.y < qy) quadrants[1] += c
+            if (pos.x < qx && pos.y > qy) quadrants[2] += c
+            if (pos.x > qx && pos.y > qy) quadrants[3] += c
+        }
 
-        return quadrants
-            .map { q ->
-                endPositions.entries.filter { it.key in q }.sumOf { it.value }
-            }.also(::println).fold(1) { acc, i -> acc * i }
+        return quadrants.fold(1) { acc, i -> acc * i}
     }
 
     fun solvePartTwo(): Long {
-        return 0
+        val out = (0 until 8050).fold(input) { acc, i ->
+            acc.map { (pos, v) ->
+                move(pos, v) to v
+            }
+        }
+        printOutput(out.map { it.first }.toSet())
+        return 8050
     }
 
-    fun printOutput(robots: Set<Point>, iteration: Int) {
+    private fun move(pos: Point, v: Point): Point {
+        val newX = if (pos.x + v.x < 0) {
+            width - (v.x.absoluteValue - pos.x)
+        } else if (pos.x + v.x >= width) {
+            v.x - (width - pos.x)
+        } else {
+            pos.x + v.x
+        }
+        val newY = if (pos.y + v.y < 0) {
+            height - (v.y.absoluteValue - pos.y)
+        } else if (pos.y + v.y >= height) {
+            v.y - (height - pos.y)
+        } else {
+            pos.y + v.y
+        }
+        return Point(newX, newY)
+    }
+
+    private fun printOutput(robots: Set<Point>) {
         val out = buildString {
             (0 until height).forEach { y ->
                 (0 until width).forEach { x ->
@@ -76,6 +84,10 @@ object Day14 {
                 appendLine()
             }
         }
-
+        File("src/main/kotlin/${this::class.java.packageName.replace('.', '/')}/out.txt")
+            .outputStream()
+            .use {
+                it.write(out.toByteArray())
+            }
     }
 }
