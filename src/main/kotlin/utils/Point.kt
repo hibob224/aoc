@@ -48,6 +48,14 @@ data class Point(val x: Int, val y: Int) {
         copy(x = x + it.x, y = y + it.y)
     }
 
+    fun getNeighbour(direction: Char): Point = when (direction) {
+        '^' -> n
+        '>' -> e
+        'v' -> s
+        '<' -> w
+        else -> error("Unknown direction: $direction")
+    }
+
     operator fun plus(other: Point) = Point(other.x + x, other.y + y)
 
     operator fun minus(other: Point) = Point(x - other.x, y - other.y)
@@ -74,6 +82,18 @@ fun <T> Map<Point, T>.traverse(block: (Point, T?) -> Unit) {
             val point = Point(x, y)
             block(point, get(point))
         }
+    }
+}
+
+fun Map<Point, Char>.printGrid(default: Char = '.') {
+    val width = maxOf { it.key.x }
+    val height = maxOf { it.key.y }
+
+    repeat(height.inc()) { y ->
+        repeat(width.inc()) { x ->
+            print(getOrDefault(Point(x, y), default))
+        }
+        println()
     }
 }
 
