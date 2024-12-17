@@ -2,13 +2,10 @@ package y2024.day09
 
 import utils.getInputFile
 import utils.isEven
-import kotlin.time.measureTime
 
 fun main() {
     println("Part one: " + Day09.solvePartOne())
-    measureTime {
-        println("Part two: " + Day09.solvePartTwo())
-    }.also { println("Time: ${it.inWholeSeconds}") }
+    println("Part two: " + Day09.solvePartTwo())
 }
 
 object Day09 {
