@@ -14,19 +14,15 @@ object Day18 {
     private val example = false
     private val gridSize = if (example) 6 else 70
     private val p1Bytes = if (example) 12 else 1024
-    private val input = getInputFile(this::class.java.packageName, example = example).readLines()
-
-    private fun parseInput(bytes: Int) =
-        input
-            .take(bytes)
-            .associate {
-                val (x, y) = it.split(",").map(String::toInt)
-                Point(x, y) to '#'
-            }
-
+    private val input = getInputFile(this::class.java.packageName, example = example)
+        .readLines()
+        .map {
+            val (x, y) = it.split(",").map(String::toInt)
+            Point(x, y) to '#'
+        }
 
     fun solvePartOne(): Int {
-        val grid = parseInput(p1Bytes)
+        val grid = input.take(p1Bytes).toMap()
 
         return grid.shortestPath(
             start = Point(0, 0),
@@ -37,18 +33,29 @@ object Day18 {
     }
 
     fun solvePartTwo(): String {
-        var bytes = gridSize
         val start = Point(0, 0)
         val target = Point(gridSize, gridSize)
+        var lastByte = Point(0, 0) // Keep track of the last byte added to the grid
+        var shortestPath = emptyList<Point>() // Keep track of the current shortest path
 
-        runCatching {
+        runCatching { // shortestPath throws when no path is found, we'll use that as our exit from the infinite loop below, so catch it...
+            val grid = input.take(p1Bytes).toMap().toMutableMap() // Start with the first kb from P1, as we know a path is possible
+            val remainingBytes = input.subList(p1Bytes, input.size) // List of the remaining undropped bytes
+            var byteIndex = 0
+
             while (true) {
-                val grid = parseInput(bytes)
-                grid.shortestPath(start, target) { _, new, _ -> if (new in grid) -1 else 1 }
-                bytes++
+                val next = remainingBytes[byteIndex]
+                lastByte = next.first
+                grid[next.first] = next.second // Add next byte to our grid
+                // If the new byte is part of our current shortest path, recalc our shortest path as it will need to change. This will throw
+                // once there is no valid path to our target
+                if (next.first in shortestPath || shortestPath.isEmpty()) {
+                    shortestPath = grid.shortestPath(start, target) { _, new, _ -> if (new in grid) -1 else 1 }.first
+                }
+                byteIndex++
             }
         }
 
-        return parseInput(bytes).keys.last().let { "${it.x},${it.y}" }
+        return "${lastByte.x},${lastByte.y}"
     }
 }
