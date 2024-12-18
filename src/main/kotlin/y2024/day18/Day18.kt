@@ -12,34 +12,43 @@ fun main() {
 object Day18 {
 
     private val example = false
-    private val p1GridSize = if (example) 6 else 70
+    private val gridSize = if (example) 6 else 70
     private val p1Bytes = if (example) 12 else 1024
+    private val input = getInputFile(this::class.java.packageName, example = example).readLines()
 
-    private fun parseInput(bytes: Int) = getInputFile(this::class.java.packageName, example = example)
-        .readLines()
-        .take(bytes)
-        .associate {
-            val (x, y) = it.split(",").map(String::toInt)
-            Point(x, y) to '#'
-        }
+    private fun parseInput(bytes: Int) =
+        input
+            .take(bytes)
+            .associate {
+                val (x, y) = it.split(",").map(String::toInt)
+                Point(x, y) to '#'
+            }
 
 
     fun solvePartOne(): Int {
         val grid = parseInput(p1Bytes)
 
-//        grid.printGrid()
-
         return grid.shortestPath(
             start = Point(0, 0),
-            target = Point(p1GridSize, p1GridSize),
+            target = Point(gridSize, gridSize),
         ) { _, new, _ ->
             if (new in grid) -1 else 1
-        }.also {
-//            println(it.first)
         }.second
     }
 
-    fun solvePartTwo(): Long {
-        return 0
+    fun solvePartTwo(): String {
+        var bytes = gridSize
+        val start = Point(0, 0)
+        val target = Point(gridSize, gridSize)
+
+        runCatching {
+            while (true) {
+                val grid = parseInput(bytes)
+                grid.shortestPath(start, target) { _, new, _ -> if (new in grid) -1 else 1 }
+                bytes++
+            }
+        }
+
+        return parseInput(bytes).keys.last().let { "${it.x},${it.y}" }
     }
 }

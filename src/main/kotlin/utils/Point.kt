@@ -1,5 +1,6 @@
 package utils
 
+import java.util.*
 import kotlin.math.abs
 import kotlin.math.atan2
 import kotlin.math.pow
@@ -62,6 +63,71 @@ data class Point(val x: Int, val y: Int) {
 
     override fun toString(): String = "($x, $y)"
 }
+
+//region A*
+/**
+ * Calculate shortest path from [start] to [end] using A*. [Score] should return a cost for moving to the new position. Return -1 if the new
+ * spot is invalid (i.e. a 'wall')
+ */
+fun <T> Map<Point, T>.shortestPath(
+    start: Point,
+    target: Point,
+    gridWidthRange: IntRange = 0..maxOf(start.x, target.x),
+    gridHeightRange: IntRange = 0..maxOf(start.y, target.y),
+    score: (currentPos: Point, newPos: Point, newTerrain: T?) -> Int,
+): Pair<List<Point>, Int> {
+    val open = mutableSetOf(start)
+    val closed = mutableSetOf<Point>()
+    val cameFrom = mutableMapOf<Point, Point>()
+    val gScore = mutableMapOf(start to 0)
+    val fScore = mutableMapOf(start to heuristicDistance(start, target)).withDefault { Int.MAX_VALUE }
+
+    while (open.isNotEmpty()) {
+        val currentPos = open.minBy { fScore.getValue(it) }
+
+        if (currentPos == target) {
+            val path = generatePath(currentPos, cameFrom)
+            return Pair(path, fScore.getValue(currentPos))
+        }
+
+        open.remove(currentPos)
+        closed += currentPos
+
+        currentPos.getNeighbours()
+            .filterNot { it in closed }
+            .filter { it.x in gridWidthRange && it.y in gridHeightRange }
+            .forEach { neighbour ->
+                val movementScore = score(currentPos, neighbour, get(neighbour))
+                if (movementScore == -1) return@forEach
+                val score = gScore.getValue(currentPos) + movementScore
+                if (score < gScore.getOrDefault(neighbour, Int.MAX_VALUE)) {
+                    if (!open.contains(neighbour)) {
+                        open.add(neighbour)
+                    }
+                    cameFrom[neighbour] = currentPos
+                    gScore[neighbour] = score
+                    fScore[neighbour] = score + heuristicDistance(neighbour, target)
+                }
+            }
+    }
+
+    error("Couldn't find a path")
+}
+
+fun generatePath(currentPos: Point, cameFrom: Map<Point, Point>): List<Point> = buildList {
+    var current = currentPos
+    while (cameFrom.containsKey(current)) {
+        current = cameFrom.getValue(current)
+        add(0, current)
+    }
+}
+
+private fun heuristicDistance(start: Point, finish: Point): Int {
+    val dx = abs(start.x - finish.x)
+    val dy = abs(start.y - finish.y)
+    return (dx + dy) + (-2) * minOf(dx, dy)
+}
+//endregion
 
 fun <T> List<String>.toPointGrid(mapper: (Point, Char) -> T): Map<Point, T> =
     flatMapIndexed { y, line ->
