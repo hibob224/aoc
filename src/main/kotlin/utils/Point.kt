@@ -114,7 +114,7 @@ fun <T> Map<Point, T>.shortestPath(
     error("Couldn't find a path")
 }
 
-fun generatePath(currentPos: Point, cameFrom: Map<Point, Point>): List<Point> = buildList {
+private fun generatePath(currentPos: Point, cameFrom: Map<Point, Point>): List<Point> = buildList {
     var current = currentPos
     while (cameFrom.containsKey(current)) {
         current = cameFrom.getValue(current)
