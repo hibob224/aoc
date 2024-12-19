@@ -40,7 +40,25 @@ object Day19 {
         }
     }
 
-    fun solvePartTwo(): Long {
-        return 0
+    fun solvePartTwo(): Long = desiredTowels.sumOf {
+        optionCount(it)
+    }
+
+    private fun optionCount(
+        desired: String,
+        cache: HashMap<String, Long> = HashMap(),
+    ): Long {
+        if (desired in cache.keys) return cache[desired]!!
+
+        val options = towelSupply.sumOf {
+            when {
+                it == desired -> 1L
+                desired.startsWith(it) -> optionCount(desired.removePrefix(it), cache)
+                else -> 0L
+            }
+        }
+
+        cache[desired] = options
+        return options
     }
 }
