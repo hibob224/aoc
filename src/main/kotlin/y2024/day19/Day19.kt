@@ -23,26 +23,20 @@ object Day19 {
 
     fun solvePartOne(): Int {
         return desiredTowels.count {
-            isTowelPossible("", it)
+            isTowelPossible(it)
         }
     }
 
-    private fun isTowelPossible(currentTowel: String, desired: String): Boolean {
-        return towelSupply.any {
-            val stitched = currentTowel + it
-            if (stitched == desired) {
-                true
-            } else if (!desired.startsWith(stitched)) {
-                false
-            } else {
-                isTowelPossible(currentTowel + it, desired)
+    private fun isTowelPossible(desired: String): Boolean =
+        towelSupply.any {
+            when {
+                it == desired -> true
+                desired.startsWith(it) -> isTowelPossible(desired.removePrefix(it))
+                else -> false
             }
         }
-    }
 
-    fun solvePartTwo(): Long = desiredTowels.sumOf {
-        optionCount(it)
-    }
+    fun solvePartTwo(): Long = desiredTowels.sumOf(::optionCount)
 
     private fun optionCount(
         desired: String,
