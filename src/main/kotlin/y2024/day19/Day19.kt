@@ -1,6 +1,8 @@
 package y2024.day19
 
+import utils.Memo2
 import utils.getInputFile
+import utils.memoize
 
 fun main() {
     println("Part one: " + Day19.solvePartOne())
@@ -36,23 +38,22 @@ object Day19 {
             }
         }
 
-    fun solvePartTwo(): Long = desiredTowels.sumOf(::optionCount)
-
-    private fun optionCount(
-        desired: String,
-        cache: HashMap<String, Long> = HashMap(),
-    ): Long {
-        if (desired in cache.keys) return cache[desired]!!
-
-        val options = towelSupply.sumOf {
-            when {
-                it == desired -> 1L
-                desired.startsWith(it) -> optionCount(desired.removePrefix(it), cache)
-                else -> 0L
-            }
-        }
-
-        cache[desired] = options
-        return options
+    fun solvePartTwo(): Long {
+        val optionCount = Memo2<Set<String>, String, Long>::optionCount.memoize()
+        return desiredTowels.sumOf { optionCount(towelSupply, it) }
     }
+}
+
+private fun Memo2<Set<String>, String, Long>.optionCount(
+    towelSuppy: Set<String>,
+    desired: String,
+): Long {
+    val options = towelSuppy.sumOf {
+        when {
+            it == desired -> 1L
+            desired.startsWith(it) -> recurse(towelSuppy, desired.removePrefix(it))
+            else -> 0L
+        }
+    }
+    return options
 }
