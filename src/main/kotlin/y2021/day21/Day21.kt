@@ -1,6 +1,8 @@
 package y2021.day21
 
+import utils.Memo2
 import utils.getInputFile
+import utils.memoize
 
 fun main() {
     println("Part one: ${Day21.solvePartOne()}")
@@ -19,14 +21,6 @@ object Day21 {
 
     init {
         assert(input.size == 2)
-    }
-
-    private val diracRolls = (1..3).flatMap { a ->
-        (1..3).flatMap { b ->
-            (1..3).map { c ->
-                listOf(a, b, c)
-            }
-        }
     }
 
     fun solvePartOne(): Int {
@@ -69,33 +63,39 @@ object Day21 {
     }
 
     fun solvePartTwo(): Long {
-        val (p1Wins, p2Wins) = playRound(0, input[0], 0, input[1])
+        val playRound = Memo2<Pair<Int, Int>, Pair<Int, Int>, Pair<Long, Long>>::playRound.memoize()
+        val (p1Wins, p2Wins) = playRound(0 to input[0], 0 to input[1])
         return maxOf(p1Wins, p2Wins)
     }
+}
 
-    // Memoization cache
-    private val cache = mutableMapOf<Pair<Pair<Int, Int>, Pair<Int, Int>>, Pair<Long, Long>>()
+private val diracRolls = (1..3).flatMap { a ->
+    (1..3).flatMap { b ->
+        (1..3).map { c ->
+            listOf(a, b, c)
+        }
+    }
+}
 
-    private fun playRound(currentScore: Int, currentPos: Int, otherScore: Int, otherPos: Int): Pair<Long, Long> {
-        val cacheKey = (currentScore to currentPos) to (otherScore to otherPos)
-        // Check if we already know the result for this argument combo in cache, or calculate it
-        return cache.computeIfAbsent(cacheKey) {
-            return@computeIfAbsent if (currentScore >= 21) {
-                1L to 0L // P1 already won
-            } else if (otherScore >= 21) {
-                0L to 1L // P2 already won
-            } else {
-                // No winner yet, continue playing with every dirac roll combo and keep a tally of who wins
-                diracRolls.fold(0L to 0L) { scores, rolls ->
-                    var newCurrentPos = currentPos + rolls.sum()
-                    while (newCurrentPos > 10) {
-                        newCurrentPos -= 10
-                    }
-                    val newCurrentScore = currentScore + newCurrentPos
-                    val (p2Wins, p1Wins) = playRound(otherScore, otherPos, newCurrentScore, newCurrentPos)
-                    scores.copy(first = scores.first + p1Wins, second = scores.second + p2Wins)
-                }
+private fun Memo2<Pair<Int, Int>, Pair<Int, Int>, Pair<Long, Long>>.playRound(current: Pair<Int, Int>, other: Pair<Int, Int>): Pair<Long, Long> {
+    val (currentScore, currentPos) = current
+    val (otherScore, otherPos) = other
+    // Check if we already know the result for this argument combo in cache, or calculate it
+
+    return if (currentScore >= 21) {
+        1L to 0L // P1 already won
+    } else if (otherScore >= 21) {
+        0L to 1L // P2 already won
+    } else {
+        // No winner yet, continue playing with every dirac roll combo and keep a tally of who wins
+        diracRolls.fold(0L to 0L) { scores, rolls ->
+            var newCurrentPos = currentPos + rolls.sum()
+            while (newCurrentPos > 10) {
+                newCurrentPos -= 10
             }
+            val newCurrentScore = currentScore + newCurrentPos
+            val (p2Wins, p1Wins) = recurse(otherScore to otherPos, newCurrentScore to newCurrentPos)
+            scores.copy(first = scores.first + p1Wins, second = scores.second + p2Wins)
         }
     }
 }
