@@ -37,7 +37,24 @@ object Day20 {
         return biggestShortcut.filter { it.third >= 100 }.size
     }
 
-    fun solvePartTwo(): Long {
-        return 0
+    fun solvePartTwo(): Int {
+        val start = input.entries.find { it.value == 'S' }!!.key
+        val target = input.entries.find { it.value == 'E' }!!.key
+
+        val (path, dist) = input.shortestPath(start, target)
+
+        val maxShortcut = 20
+        val biggestShortcut = path.flatMap { p ->
+            val pIndex = path.indexOf(p).inc()
+            p.neighboursInRadius(maxShortcut)
+                .mapNotNull {
+                    val ind = if (it == target) path.size + 1 else path.indexOf(it).takeIf { it != -1 }?.inc() ?: return@mapNotNull null
+                    val diff = ind - pIndex - p.manhattan(it)
+                    Triple(p, it, diff)
+                }
+                .filterNot { it.third <= 0 }
+        }
+
+        return biggestShortcut.filter { it.third >= 100 }.size
     }
 }
