@@ -72,9 +72,9 @@ data class Point(val x: Int, val y: Int) {
 fun <T> Map<Point, T>.shortestPath(
     start: Point,
     target: Point,
-    gridWidthRange: IntRange = 0..maxOf(start.x, target.x),
-    gridHeightRange: IntRange = 0..maxOf(start.y, target.y),
-    score: (currentPos: Point, newPos: Point, newTerrain: T?) -> Int,
+    gridWidthRange: IntRange = 0..keys.maxOf { it.x },
+    gridHeightRange: IntRange = 0..keys.maxOf { it.y },
+    score: (currentPos: Point, newPos: Point, newTerrain: T?) -> Int = { _, _, c -> if (c == '#') -1 else 1 },
 ): Pair<List<Point>, Int> {
     val open = mutableSetOf(start)
     val closed = mutableSetOf<Point>()
@@ -174,4 +174,18 @@ fun pointsInArea(point1: Point, point2: Point): List<Point> {
             }
         }
     }
+}
+
+/**
+ * Returns all neighbours within provided [radius], using Manhattan distance
+ */
+fun Point.neighboursInRadius(radius: Int): List<Point> = buildList {
+    for (x in (this@neighboursInRadius.x - radius)..(this@neighboursInRadius.x + radius)) {
+        for (y in (this@neighboursInRadius.y - radius)..(this@neighboursInRadius.y + radius)) {
+            if (abs(this@neighboursInRadius.x - x) + abs(this@neighboursInRadius.y - y) <= radius) {
+                add(Point(x, y))
+            }
+        }
+    }
+    remove(this@neighboursInRadius)
 }
