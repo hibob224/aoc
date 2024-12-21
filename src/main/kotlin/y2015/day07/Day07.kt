@@ -9,7 +9,7 @@ fun main() {
 
 object Day07 {
 
-    private val input: Map<String, Operation> = getInputFile(this::class.java.packageName, example = false)
+    private val input: Map<String, Operation> = getInputFile()
         .readLines()
         .map { it.split(" -> ") }
         .associate { (ins, out) ->

@@ -12,7 +12,7 @@ fun main() {
 object Day15 {
 
     private val regex = """^Sensor at x=(-?\d+), y=(-?\d+): closest beacon is at x=(-?\d+), y=(-?\d+)$""".toRegex()
-    private val input = getInputFile(this::class.java.packageName)
+    private val input = getInputFile()
         .readLines()
         .map {
             val (_, x1, y1, x2, y2) = regex.find(it)!!.groupValues

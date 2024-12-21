@@ -11,7 +11,7 @@ fun main() {
 
 object Day12 {
 
-    private val input = getInputFile(this::class.java.packageName, example = false)
+    private val input = getInputFile()
         .readLines()
         .toPointGrid()
     private val groups = mutableListOf<Set<Pair<Point, Cell>>>()

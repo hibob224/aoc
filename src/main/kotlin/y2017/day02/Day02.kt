@@ -9,7 +9,7 @@ fun main() {
 
 object Day02 {
 
-    private val input = getInputFile(this::class.java.packageName).readLines()
+    private val input = getInputFile().readLines()
 
     fun solvePartOne(): Int {
         var sum = 0

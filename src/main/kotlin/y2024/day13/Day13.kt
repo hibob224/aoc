@@ -11,7 +11,7 @@ object Day13 {
 
     private val buttonRegex = """X\+(\d+), Y\+(\d+)""".toRegex()
     private val prizeRegex = """X=(\d+), Y=(\d+)""".toRegex()
-    private val input = getInputFile(this::class.java.packageName, example = false)
+    private val input = getInputFile()
         .readLines()
         .filterNot { it.isBlank() }
         .chunked(3)

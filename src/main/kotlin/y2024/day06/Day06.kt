@@ -12,7 +12,7 @@ fun main() {
 object Day06 {
 
     private lateinit var guardStartPos: Point
-    private val input = getInputFile(this::class.java.packageName, example = false)
+    private val input = getInputFile()
         .readLines()
         .toPointGrid { pos, c ->
             if (c == '^') guardStartPos = pos

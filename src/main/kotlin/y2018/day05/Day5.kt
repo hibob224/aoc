@@ -10,7 +10,7 @@ fun main() {
 }
 
 object Day5 {
-    private val actualInput = getInputFile(this::class.java.packageName).readText()
+    private val actualInput = getInputFile().readText()
 
     fun solvePartOne(input: String = actualInput): Int {
         val result = ArrayDeque<Char>(actualInput.length)
@@ -19,7 +19,8 @@ object Day5 {
             if (result.isNotEmpty()) {
                 val last = result.peek()
                 if (it.equals(last, true) &&
-                        ((it.isUpperCase() && last.isLowerCase()) || (it.isLowerCase() && last.isUpperCase()))) {
+                    ((it.isUpperCase() && last.isLowerCase()) || (it.isLowerCase() && last.isUpperCase()))
+                ) {
                     result.pop()
                     continue
                 }

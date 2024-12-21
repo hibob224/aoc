@@ -9,7 +9,7 @@ fun main() {
 
 object Day15 {
 
-    private val file = getInputFile(this::class.java.packageName)
+    private val file = getInputFile()
 
     fun solvePartOne(): Int {
         val battleField = mutableListOf<MutableList<Tile>>().also { parseFile(it) }
@@ -25,7 +25,8 @@ object Day15 {
                     battleField[unit.y - 1][unit.x],
                     battleField[unit.y][unit.x - 1],
                     battleField[unit.y][unit.x + 1],
-                    battleField[unit.y + 1][unit.x])
+                    battleField[unit.y + 1][unit.x]
+                )
 
                 if (surrounding.find { it is Unit && unit.faction.enemy() == it.faction } == null) {
                     performLees(unit, battleField)
@@ -36,7 +37,8 @@ object Day15 {
                     battleField[unit.y - 1][unit.x],
                     battleField[unit.y][unit.x - 1],
                     battleField[unit.y][unit.x + 1],
-                    battleField[unit.y + 1][unit.x])
+                    battleField[unit.y + 1][unit.x]
+                )
 
                 movedSurrounding
                     .filter { it is Unit && unit.faction.enemy() == it.faction }
@@ -83,7 +85,8 @@ object Day15 {
                     battleField[unit.y - 1][unit.x],
                     battleField[unit.y][unit.x - 1],
                     battleField[unit.y][unit.x + 1],
-                    battleField[unit.y + 1][unit.x])
+                    battleField[unit.y + 1][unit.x]
+                )
 
                 if (surrounding.find { it is Unit && unit.faction.enemy() == it.faction } == null) {
                     performLees(unit, battleField)
@@ -93,7 +96,8 @@ object Day15 {
                     battleField[unit.y - 1][unit.x],
                     battleField[unit.y][unit.x - 1],
                     battleField[unit.y][unit.x + 1],
-                    battleField[unit.y + 1][unit.x])
+                    battleField[unit.y + 1][unit.x]
+                )
 
                 // Attempt an attack if we're already within range
                 movedSurrounding
@@ -132,13 +136,15 @@ object Day15 {
         file.readLines().forEachIndexed { y, row ->
             val rowList = mutableListOf<Tile>()
             row.forEachIndexed { x, it ->
-                rowList.add(when (it) {
-                    '.' -> Empty(x, y)
-                    '#' -> Wall(x, y)
-                    'G' -> Unit(x, y, Faction.GOBLIN)
-                    'E' -> Unit(x, y, Faction.ELF, elfPower)
-                    else -> throw IllegalArgumentException("Unknown tile type")
-                })
+                rowList.add(
+                    when (it) {
+                        '.' -> Empty(x, y)
+                        '#' -> Wall(x, y)
+                        'G' -> Unit(x, y, Faction.GOBLIN)
+                        'E' -> Unit(x, y, Faction.ELF, elfPower)
+                        else -> throw IllegalArgumentException("Unknown tile type")
+                    }
+                )
             }
             battleField.add(rowList)
         }
@@ -167,28 +173,32 @@ object Day15 {
 
                 val tileAbove = battleField[it.second.dec()][it.first]
                 if ((tileAbove.canStepOn || (tileAbove is Unit && tileAbove.faction.enemy() == unit.faction))
-                    && leesGrid[it.second.dec()][it.first] == -1) {
+                    && leesGrid[it.second.dec()][it.first] == -1
+                ) {
                     leesGrid[it.second.dec()][it.first] = currentVal.inc()
                     newFront.add(Pair(it.first, it.second.dec()))
                 }
 
                 val tileBelow = battleField[it.second.inc()][it.first]
                 if ((tileBelow.canStepOn || (tileBelow is Unit && tileBelow.faction.enemy() == unit.faction))
-                    && leesGrid[it.second.inc()][it.first] == -1) {
+                    && leesGrid[it.second.inc()][it.first] == -1
+                ) {
                     leesGrid[it.second.inc()][it.first] = currentVal.inc()
                     newFront.add(Pair(it.first, it.second.inc()))
                 }
 
                 val tileLeft = battleField[it.second][it.first.dec()]
                 if ((tileLeft.canStepOn || (tileLeft is Unit && tileLeft.faction.enemy() == unit.faction))
-                    && leesGrid[it.second][it.first.dec()] == -1) {
+                    && leesGrid[it.second][it.first.dec()] == -1
+                ) {
                     leesGrid[it.second][it.first.dec()] = currentVal.inc()
                     newFront.add(Pair(it.first.dec(), it.second))
                 }
 
                 val tileRight = battleField[it.second][it.first.inc()]
                 if ((tileRight.canStepOn || (tileRight is Unit && tileRight.faction.enemy() == unit.faction))
-                    && leesGrid[it.second][it.first.inc()] == -1) {
+                    && leesGrid[it.second][it.first.inc()] == -1
+                ) {
                     leesGrid[it.second][it.first.inc()] = currentVal.inc()
                     newFront.add(Pair(it.first.inc(), it.second))
                 }

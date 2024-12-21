@@ -9,7 +9,7 @@ fun main() {
 
 object Day03 {
 
-    private val input = getInputFile(this::class.java.packageName)
+    private val input = getInputFile()
         .readLines()
         .map(String::toList)
 

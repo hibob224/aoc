@@ -10,7 +10,7 @@ fun main() {
 
 object Day03 {
 
-    private val fileInput = getInputFile(this::class.java.packageName).readLines()
+    private val fileInput = getInputFile().readLines()
 
     fun solvePartOne(): Int {
         val threshold = fileInput.size / 2

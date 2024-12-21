@@ -12,7 +12,7 @@ object Day12 {
 
     private lateinit var start: Point
     private lateinit var target: Point
-    private val input = getInputFile(this::class.java.packageName)
+    private val input = getInputFile()
         .readLines()
         .flatMapIndexed { y: Int, row: String ->
             row.mapIndexed { x, level ->

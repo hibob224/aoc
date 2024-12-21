@@ -10,7 +10,7 @@ fun main() {
 
 object Day23 {
 
-    private val file = getInputFile(this::class.java.packageName)
+    private val file = getInputFile()
     private val botPattern = """pos=<([-]?\d+),([-]?\d+),([-]?\d+)>, r=([-]?\d+)""".toRegex() //pos=<0,0,0>, r=4
     private val bots = mutableListOf<NanoBot>()
 

@@ -9,7 +9,7 @@ fun main() {
 
 object Day03 {
 
-    private val input = getInputFile(this::class.java.packageName).readText()
+    private val input = getInputFile().readText()
 
     fun solvePartOne(): Int {
         return input

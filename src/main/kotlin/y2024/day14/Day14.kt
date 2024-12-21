@@ -13,7 +13,7 @@ fun main() {
 object Day14 {
 
     private val parse = """^p=(-?\d+),(-?\d+) v=(-?\d+),(-?\d+)$""".toRegex()
-    private val input = getInputFile(this::class.java.packageName)
+    private val input = getInputFile()
         .readLines()
         .map {
             val (px, py, vx, vy) = parse.find(it)!!.destructured

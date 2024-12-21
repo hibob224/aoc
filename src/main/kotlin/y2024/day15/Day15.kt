@@ -15,7 +15,7 @@ object Day15 {
     private val gridInput: List<String>
 
     init {
-        val (gridInput, instructionInput) = getInputFile(this::class.java.packageName, example = false)
+        val (gridInput, instructionInput) = getInputFile()
             .readText()
             .split("\n\n")
             .map { it.split("\n") }

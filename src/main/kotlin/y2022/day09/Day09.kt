@@ -11,7 +11,7 @@ fun main() {
 object Day09 {
 
     private val commandRegex = """^(.) (\d+)$""".toRegex()
-    private val input = getInputFile(this::class.java.packageName)
+    private val input = getInputFile()
         .readLines()
         .map {
             val (_, direction, distance) = commandRegex.find(it)!!.groupValues

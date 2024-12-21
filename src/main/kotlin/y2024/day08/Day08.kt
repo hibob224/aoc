@@ -12,7 +12,7 @@ fun main() {
 object Day08 {
 
     private val input =
-        getInputFile(this::class.java.packageName, example = false)
+        getInputFile()
             .readLines()
             .toPointGrid()
     private val width = input.maxOf { it.key.x }

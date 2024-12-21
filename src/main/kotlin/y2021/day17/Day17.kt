@@ -12,7 +12,7 @@ fun main() {
 object Day17 {
 
     private val regex = """^target area: x=(-?\d+)\.\.(-?\d+), y=(-?\d+)..(-?\d+)${'$'}""".toRegex()
-    private val input = getInputFile(this::class.java.packageName).readText()
+    private val input = getInputFile().readText()
     private val hitTrajectories: Map<Point, Int>
 
     init {

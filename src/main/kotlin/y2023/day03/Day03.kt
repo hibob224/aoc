@@ -50,7 +50,7 @@ object Day03 {
 
     private fun parseGrid(): Map<List<Point>, String> {
         return buildMap<List<Point>, String> {
-            getInputFile(this@Day03::class.java.packageName, example = false)
+            getInputFile()
                 .readLines()
                 .forEachIndexed { y, line ->
                     var acc = ""

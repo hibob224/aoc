@@ -13,7 +13,7 @@ fun main() {
 
 object Day10 {
 
-    private val input = getInputFile(this::class.java.packageName)
+    private val input = getInputFile()
         .readLines()
         .map { it.split(" ") }
 

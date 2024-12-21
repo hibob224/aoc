@@ -17,7 +17,7 @@ object Day05 {
     }
 
     private fun parseInput() {
-        var (stackInput, moveInput) = getInputFile(this::class.java.packageName)
+        var (stackInput, moveInput) = getInputFile()
             .readText()
             .split("\n\n", limit = 2)
             .map { it.split("\n") }

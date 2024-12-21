@@ -11,7 +11,7 @@ object Day12 {
 
     private val cavePaths = mutableMapOf<String, Set<String>>()
         .apply {
-            getInputFile(this@Day12::class.java.packageName)
+            getInputFile()
                 .readLines()
                 .forEach {
                     val (a, b) = it.split("-")

@@ -11,7 +11,7 @@ fun main() {
 object Day04 {
 
     private val input =
-        getInputFile(this::class.java.packageName, example = false)
+        getInputFile()
             .readLines()
             .map { it.split(": ")[1] }
             .map { it.split(" | ") }

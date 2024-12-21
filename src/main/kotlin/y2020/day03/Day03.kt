@@ -15,7 +15,7 @@ object Day03 {
     private val height: Int
 
     init {
-        input = getInputFile(this::class.java.packageName)
+        input = getInputFile()
             .readLines()
             .also {
                 height = it.size

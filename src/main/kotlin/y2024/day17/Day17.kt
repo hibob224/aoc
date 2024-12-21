@@ -14,7 +14,7 @@ object Day17 {
     private val instructions: List<Int>
 
     init {
-        val (regInput, insInput) = getInputFile(this::class.java.packageName, example = false)
+        val (regInput, insInput) = getInputFile()
             .readText()
             .split("\n\n")
 

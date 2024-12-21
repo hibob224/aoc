@@ -13,7 +13,7 @@ object Day08 {
         """^([a-z]{2,7}) ([a-z]{2,7}) ([a-z]{2,7}) ([a-z]{2,7}) ([a-z]{2,7}) ([a-z]{2,7}) ([a-z]{2,7}) ([a-z]{2,7}) ([a-z]{2,7}) ([a-z]{2,7}) \| ([a-z]{2,7}) ([a-z]{2,7}) ([a-z]{2,7}) ([a-z]{2,7})${'$'}""".toRegex()
 
     private val displays: List<Display> =
-        getInputFile(this::class.java.packageName)
+        getInputFile()
             .readLines()
             .map {
                 val match = regex.find(it)!!.groupValues

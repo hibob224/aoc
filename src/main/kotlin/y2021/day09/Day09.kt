@@ -11,7 +11,7 @@ fun main() {
 object Day09 {
 
     private val input: MutableMap<Point, Int> =
-        getInputFile(this::class.java.packageName)
+        getInputFile()
             .readLines()
             .flatMapIndexed { y, row ->
                 row.mapIndexed { x, c ->

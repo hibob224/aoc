@@ -12,7 +12,7 @@ fun main() {
 
 object Day04 {
 
-    private val input = getInputFile(this::class.java.packageName).readLines().toPointGrid()
+    private val input = getInputFile().readLines().toPointGrid()
 
     fun solvePartOne(): Long {
         var count = 0L

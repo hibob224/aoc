@@ -10,7 +10,7 @@ fun main() {
 object Day14 {
 
     private val regex = """^([A-Z]{2}) -> ([A-Z])${'$'}""".toRegex()
-    private val input: List<String> = getInputFile(this::class.java.packageName).readLines()
+    private val input: List<String> = getInputFile().readLines()
     private val counts: Map<String, Long> = input
         .first()
         .windowed(2)

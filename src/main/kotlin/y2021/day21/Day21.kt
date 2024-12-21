@@ -13,7 +13,7 @@ object Day21 {
 
     private val regex = """^Player \d starting position: (\d+)$""".toRegex()
     private val input: List<Int> =
-        getInputFile(this::class.java.packageName)
+        getInputFile()
             .readLines()
             .map {
                 regex.find(it)!!.groupValues[1].toInt()

@@ -14,7 +14,7 @@ object Day07 {
     private val contentsRegex = """(\d) (.*?) bag""".toRegex()
 
     private val bags: List<Bag> =
-        getInputFile(this::class.java.packageName)
+        getInputFile()
             .readLines()
             .map { line ->
                 val (bagColour) = colourRegex.matchEntire(line)!!.destructured

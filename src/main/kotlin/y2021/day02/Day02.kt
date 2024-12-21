@@ -10,7 +10,7 @@ fun main() {
 object Day02 {
 
     private val input: List<SubMove> =
-        getInputFile(this::class.java.packageName)
+        getInputFile()
             .readLines()
             .map(::SubMove)
 

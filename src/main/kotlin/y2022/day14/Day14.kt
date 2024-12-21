@@ -11,7 +11,7 @@ fun main() {
 object Day14 {
 
     private val regex = """(\d+,\d+)""".toRegex()
-    private val input = getInputFile(this::class.java.packageName)
+    private val input = getInputFile()
         .readLines()
         .map {
             regex.findAll(it)

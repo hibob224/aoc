@@ -9,7 +9,7 @@ fun main() {
 
 object Day07 {
 
-    private val input = getInputFile(this::class.java.packageName).readLines()
+    private val input = getInputFile().readLines()
     private val root = FileSystem.Directory(parent = null, name = "/")
     private val fileRegex = """^(\d+) (.*+)$""".toRegex()
     private val directoryRegex = """^\$ cd (.*+)$""".toRegex()

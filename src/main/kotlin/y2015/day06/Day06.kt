@@ -12,7 +12,7 @@ fun main() {
 object Day06 {
 
     private val regex = """^(turn on|turn off|toggle) (\d+),(\d+) through (\d+),(\d+)$""".toRegex()
-    private val input = getInputFile(this::class.java.packageName)
+    private val input = getInputFile()
         .readLines()
         .map {
             val (operation, aX, aY, bX, bY) = regex.find(it)!!.destructured

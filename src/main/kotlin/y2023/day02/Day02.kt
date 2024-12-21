@@ -12,7 +12,7 @@ object Day02 {
 
     private val regex = """(\d+) (red|green|blue)""".toRegex()
     private val input =
-        getInputFile(this::class.java.packageName)
+        getInputFile()
             .readLines()
             .map { it.split(": ")[1].split("; ") }
             .map { it.flatMap { regex.findAll(it).toList() } }

@@ -9,7 +9,7 @@ fun main() {
 
 object Day18 {
 
-    private val file = getInputFile(this::class.java.packageName)
+    private val file = getInputFile()
     private val area = mutableMapOf<Pair<Int, Int>, Tile>()
     private val states = mutableListOf<MutableMap<Pair<Int, Int>, Tile>>()
     private var width = 0
@@ -82,7 +82,7 @@ object Day18 {
                     }
                     is Lumberyard -> {
                         if (surroundingTiles.count { it is Lumberyard } < 1
-                                || surroundingTiles.count { it is Trees } < 1) {
+                            || surroundingTiles.count { it is Trees } < 1) {
                             area[x to y] = Open()
                         }
                     }

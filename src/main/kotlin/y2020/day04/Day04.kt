@@ -12,7 +12,7 @@ object Day04 {
     private val passports = mutableListOf<Passport>()
 
     init {
-        getInputFile(this::class.java.packageName)
+        getInputFile()
             .readLines()
             .fold("") { acc, i ->
                 if (i.isEmpty()) {

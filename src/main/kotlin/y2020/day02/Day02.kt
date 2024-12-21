@@ -10,7 +10,7 @@ fun main() {
 object Day02 {
 
     private val parsedInput: List<PasswordPolicy> =
-        getInputFile(this::class.java.packageName)
+        getInputFile()
             .readLines()
             .map(::PasswordPolicy)
 

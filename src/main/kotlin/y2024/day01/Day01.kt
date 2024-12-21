@@ -14,7 +14,7 @@ object Day01 {
     private val secondList: List<Long>
 
     init {
-        val (first, second) = getInputFile(this::class.java.packageName)
+        val (first, second) = getInputFile()
             .readLines()
             .map {
                 val first = it.substringBefore(' ').toLong()

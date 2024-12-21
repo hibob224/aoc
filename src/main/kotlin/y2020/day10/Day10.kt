@@ -11,7 +11,7 @@ fun main() {
 object Day10 {
 
     private val input: List<Int> =
-        getInputFile(this::class.java.packageName)
+        getInputFile()
             .readLines()
             .map(String::toInt)
             .sorted()

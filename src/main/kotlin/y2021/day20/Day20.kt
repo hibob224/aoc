@@ -15,7 +15,7 @@ object Day20 {
 
 
     init {
-        val input = getInputFile(this::class.java.packageName).readLines()
+        val input = getInputFile().readLines()
         algorithm = input.first()
         initialImage = input.drop(2).flatMapIndexed { y: Int, row: String ->
             row.mapIndexed { x, c ->

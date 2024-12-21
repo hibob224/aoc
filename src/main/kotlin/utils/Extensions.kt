@@ -7,6 +7,8 @@ import java.io.File
 import java.security.MessageDigest
 import kotlin.math.roundToInt
 
+fun Boolean?.orFalse(): Boolean = this ?: false
+
 fun Int?.orZero(): Int = this ?: 0
 
 fun Long?.orZero(): Long = this ?: 0
@@ -122,7 +124,10 @@ fun List<Long>.gcd(): Long = reduce { x, y -> gcd(x, y) }
 fun lcm(x: Long, y: Long): Long = x * (y / gcd(x, y))
 fun List<Long>.lcm(): Long = reduce { x, y -> lcm(x, y) }
 
-fun getInputFile(packageName: String, example: Boolean = false): File = File("src/main/kotlin/${packageName.replace('.', '/')}/${if (example) "example" else "input"}.txt")
+fun Any.getInputFile(example: Boolean = false): File = getInputFile()
+
+@Deprecated("Use alternate that doesn't take package name", replaceWith = ReplaceWith("getInputFile()"))
+private fun getInputFile(packageName: String, example: Boolean = false): File = File("src/main/kotlin/${packageName.replace('.', '/')}/${if (example) "example" else "input"}.txt")
 
 fun <T> List<T>.permutations(): List<List<T>> {
     return if (this.size == 1) listOf(this)

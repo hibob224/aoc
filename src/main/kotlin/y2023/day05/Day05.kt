@@ -14,7 +14,7 @@ object Day05 {
     private val mappings: List<Map<LongRange, LongRange>>
 
     init {
-        val input = getInputFile(this::class.java.packageName, example = false).readLines()
+        val input = getInputFile().readLines()
         seeds = input[0].split(": ")[1].split(" ").map(String::toLong)
         mappings = input
             .drop(n = 2)

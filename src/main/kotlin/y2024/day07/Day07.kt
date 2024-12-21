@@ -11,7 +11,7 @@ private fun Long.concat(other: Long): Long = "$this$other".toLong()
 
 object Day07 {
 
-    private val input = getInputFile(this::class.java.packageName, example = false)
+    private val input = getInputFile()
         .readLines()
         .map {
             val (targ, nums) = it.split(": ", limit = 2)

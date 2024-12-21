@@ -8,7 +8,7 @@ fun main() {
 
 object Day10 {
 
-    private val data = getInputFile(this::class.java.packageName).readLines()
+    private val data = getInputFile().readLines()
     private val pattern = """^position=<([\s|-]?\d+), ([\s|-]?\d+)> velocity=<([\s|-]?\d+), ([\s|-]?\d+)>${'$'}""".toRegex()
 
     fun runGrid() {

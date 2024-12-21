@@ -11,7 +11,7 @@ object Day08 {
 
     private val regex = """^(nop|acc|jmp) ([+-]\d+)${'$'}""".toRegex()
     private fun parseInput(): List<Instruction> =
-        getInputFile(this::class.java.packageName)
+        getInputFile()
             .readLines()
             .map { line ->
                 regex.matchEntire(line)?.let {

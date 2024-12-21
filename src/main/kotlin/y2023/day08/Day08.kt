@@ -14,7 +14,7 @@ object Day08 {
     private val instructions: List<Char>
 
     init {
-        val input = getInputFile(this::class.java.packageName, example = false).readLines()
+        val input = getInputFile().readLines()
         instructions = input[0].toList()
         val regex = """^(.{3}) = \((.{3}), (.{3})\)${'$'}""".toRegex()
         locations = input.drop(n = 2)

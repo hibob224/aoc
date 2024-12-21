@@ -11,7 +11,7 @@ object Day04 {
 
     private val regex = """^(\d+)-(\d+),(\d+)-(\d+)$""".toRegex()
     private val input =
-        getInputFile(this::class.java.packageName)
+        getInputFile()
             .readLines()
             .map {
                 val (_, oneStart, oneEnd, twoStart, twoEnd) = regex.find(it)!!.groupValues

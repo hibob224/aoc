@@ -10,7 +10,7 @@ fun main() {
 
 object Day1 {
 
-    private val input = getInputFile(this::class.java.packageName).readLines()
+    private val input = getInputFile().readLines()
 
     /**
      * Will sum all the deltas to return the final frequency

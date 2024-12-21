@@ -9,7 +9,7 @@ fun main() {
 
 object Day22 {
 
-    private val file = getInputFile(this::class.java.packageName)
+    private val file = getInputFile()
     private val grid = mutableMapOf<Pair<Int, Int>, Pair<Int, Type>>()
     private var target = Pair(0, 0)
     private var depth = 0

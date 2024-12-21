@@ -10,7 +10,7 @@ fun main() {
 object Day06 {
 
     private val input: List<String> =
-        getInputFile(this::class.java.packageName)
+        getInputFile()
             .readText()
             .split("\n\n")
 

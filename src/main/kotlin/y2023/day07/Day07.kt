@@ -11,7 +11,7 @@ fun main() {
 object Day07 {
 
     private val input =
-        getInputFile(this::class.java.packageName, example = false)
+        getInputFile()
             .readLines()
             .map {
                 val (hand, bid) = it.split(" ", limit = 2)

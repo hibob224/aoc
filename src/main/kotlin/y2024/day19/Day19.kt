@@ -16,7 +16,7 @@ object Day19 {
 
     init {
         val (supplyInput, desireInput) =
-            getInputFile(this::class.java.packageName, example = false)
+            getInputFile()
                 .readText()
                 .split("\n\n")
         towelSupply = supplyInput.split(", ").toSet()

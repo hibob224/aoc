@@ -10,7 +10,7 @@ fun main() {
 object Day06 {
 
     private val input =
-        getInputFile(this::class.java.packageName, example = false)
+        getInputFile()
             .readLines()
             .joinToString(separator = "")
             .let {

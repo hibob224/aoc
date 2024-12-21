@@ -10,7 +10,7 @@ fun main() {
 object Day10 {
 
     private val tagMapping = mapOf('(' to ')', '{' to '}', '[' to ']', '<' to '>')
-    private val input: List<String> = getInputFile(this::class.java.packageName).readLines()
+    private val input: List<String> = getInputFile().readLines()
 
     fun solvePartOne(): Int {
         val illegalChars = mutableListOf<Char>()

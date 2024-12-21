@@ -10,7 +10,7 @@ fun main() {
 
 object Day16 {
 
-    private val packet = Packet(getInputFile(this::class.java.packageName).readLines().first().hexToBinary())
+    private val packet = Packet(getInputFile().readLines().first().hexToBinary())
 
     fun solvePartOne(): Int = packet.versionSum()
 

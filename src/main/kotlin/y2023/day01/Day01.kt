@@ -11,7 +11,7 @@ fun main() {
 // Original solution written on Kotlin Playground, on mobile...
 object Day01 {
 
-    private val input = getInputFile(this::class.java.packageName).readLines()
+    private val input = getInputFile().readLines()
 
     fun solvePartOne(): Int =
         input

@@ -12,7 +12,7 @@ object Day12 {
 
     private val regex = """^([A-Z])(\d+)$""".toRegex()
     private val input: List<Instruction> =
-        getInputFile(this::class.java.packageName)
+        getInputFile()
             .readLines()
             .map { line ->
                 regex.matchEntire(line)?.let {

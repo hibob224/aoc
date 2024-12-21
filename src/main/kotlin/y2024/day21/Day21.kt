@@ -31,7 +31,7 @@ private val directionalKeypad = listOf(".^A", "<v>").toPointGrid().toList().filt
 
 object Day21 {
 
-    private val input = getInputFile(this::class.java.packageName).readLines()
+    private val input = getInputFile().readLines()
 
     fun solvePartOne(): Long = solve(2)
 

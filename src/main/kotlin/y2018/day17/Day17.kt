@@ -17,7 +17,7 @@ fun main() {
  */
 object Day17 {
 
-    private val file = getInputFile(this::class.java.packageName)
+    private val file = getInputFile()
     private val pattern = """(\w)=(\d+), \w=(\d+)..(\d+)""".toRegex()
     private val walls = mutableSetOf<Pair<Int, Int>>()
     private val water = mutableSetOf<Pair<Int, Int>>()
@@ -63,7 +63,8 @@ object Day17 {
                         break
                     }
                     if (!walls.contains(x - index to y.inc())
-                            && !water.contains(x - index to y.inc())) {
+                        && !water.contains(x - index to y.inc())
+                    ) {
                         leftDrop = x - index
                         break
                     }
@@ -76,7 +77,8 @@ object Day17 {
                         break
                     }
                     if (!walls.contains(x + index to y.inc())
-                            && !water.contains(x + index to y.inc())) {
+                        && !water.contains(x + index to y.inc())
+                    ) {
                         rightDrop = x + index
                         break
                     }
@@ -117,7 +119,7 @@ object Day17 {
             }
 
             water.add(x to y)
-                addFlow(x to y.inc())
+            addFlow(x to y.inc())
 //            println("Lowest Flow: ${water.maxBy { it.second }!!.second} Flow size: ${flow.size}")
         }
 
@@ -160,7 +162,7 @@ object Day17 {
         val largeY = maxOf(walls.maxBy { it.second }.second, water.maxBy { it.second }.second)
 
         File("src/day17/output.csv").printWriter().apply {
-            (0..largeY).forEach {  y ->
+            (0..largeY).forEach { y ->
                 (0..largeX).forEach { x ->
                     val prefix = if (x >= 0) "," else ""
                     when {

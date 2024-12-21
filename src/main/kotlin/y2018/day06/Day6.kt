@@ -10,7 +10,7 @@ fun main() {
 
 object Day6 {
 
-    private val input = getInputFile(this::class.java.packageName).readLines()
+    private val input = getInputFile().readLines()
 
     fun solvePartOne(): Int {
         val coords = input.map {
@@ -33,8 +33,8 @@ object Day6 {
         }
 
         val groups = coordList.filter { it.value.size == 1 }
-                .entries
-                .groupBy { it.value.first() }
+            .entries
+            .groupBy { it.value.first() }
 
         return groups.filterNot {
             it.key.first == leftMost || it.key.first == rightMost || it.key.second == topMost || it.key.second == bottomMost

@@ -9,7 +9,7 @@ fun main() {
 
 object Day13 {
 
-    private val network = Network(getInputFile(this::class.java.packageName).readLines())
+    private val network = Network(getInputFile().readLines())
     private val firstCrash: Pair<Int, Int>
     private val lastCart: Network.Cart
 

@@ -9,7 +9,7 @@ fun main() {
 
 object Day7 {
 
-    private val input = getInputFile(this::class.java.packageName).readLines()
+    private val input = getInputFile().readLines()
     private val pattern = """Step (\w) must be finished before step (\w) can begin""".toRegex()
     private val alphabet = "abcdefghijklmnopqrstuvwxyz".uppercase()
     private const val numberOfWorkers = 5 // 2 for example

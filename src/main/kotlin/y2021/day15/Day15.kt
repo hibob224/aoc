@@ -10,7 +10,7 @@ fun main() {
 
 object Day15 {
 
-    private fun parseInput(): List<String> = getInputFile(this::class.java.packageName).readLines()
+    private fun parseInput(): List<String> = getInputFile().readLines()
 
     fun solvePartOne(): Int {
         val input = parseInput()

@@ -9,7 +9,7 @@ fun main() {
 
 object Day06 {
 
-    private val input: Map<Int, Long> = getInputFile(this::class.java.packageName)
+    private val input: Map<Int, Long> = getInputFile()
         .readText()
         .split(",")
         .map(String::toInt)

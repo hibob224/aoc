@@ -11,7 +11,7 @@ fun main() {
 object Day01 {
 
     private val input =
-        getInputFile(this::class.java.packageName)
+        getInputFile()
             .readLines()
             .map(String::toIntOrNull)
             .groupOnNulls()

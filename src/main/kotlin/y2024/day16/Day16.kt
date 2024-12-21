@@ -12,7 +12,7 @@ fun main() {
 
 object Day16 {
 
-    private val input = getInputFile(this::class.java.packageName, example = false)
+    private val input = getInputFile()
         .readLines()
         .toPointGrid()
 

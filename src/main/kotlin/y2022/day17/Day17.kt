@@ -12,7 +12,7 @@ fun main() {
 
 object Day17 {
 
-    private val input = getInputFile(this::class.java.packageName, example = true).readText()
+    private val input = getInputFile().readText()
     private val rockShapes = listOf(
         listOf(Point(0, 0), Point(1, 0), Point(2, 0), Point(3, 0)), // -
         listOf(Point(1, 0), Point(0, 1), Point(1, 1), Point(2, 1), Point(1, 2)), // +
@@ -38,7 +38,8 @@ object Day17 {
             rock
                 .map { it + jetMovement }
                 .takeIf {
-                    it.none { it in fallenRocks } && it.maxOf(Point::x) in horizontalBounds && it.minOf(Point::x) in horizontalBounds }
+                    it.none { it in fallenRocks } && it.maxOf(Point::x) in horizontalBounds && it.minOf(Point::x) in horizontalBounds
+                }
                 ?: rock
         }
 
@@ -62,6 +63,7 @@ object Day17 {
 
         return fallenRocks.maxOf(Point::y).inc()
     }
+
     fun solvePartTwo(): Int {
         // Simulate a whole bunch of rocks
         // Find a repeating cycle in the grid

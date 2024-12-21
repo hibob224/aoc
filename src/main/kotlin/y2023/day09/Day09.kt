@@ -10,7 +10,7 @@ fun main() {
 object Day09 {
 
     private val input =
-        getInputFile(this::class.java.packageName, example = false)
+        getInputFile()
             .readLines()
             .map { it.split(" ").map(String::toLong) }
             .map {

@@ -9,7 +9,7 @@ fun main() {
 
 object Day19 {
 
-    private val file = getInputFile(this::class.java.packageName)
+    private val file = getInputFile()
     val instructionPattern = """(\w+) (\d+) (\d+) (\d+)""".toRegex()
     val opcodes = mapOf(
         "addr" to { inp: IntArray, op: Instruction -> inp[op.c] = inp[op.a] + inp[op.b] },

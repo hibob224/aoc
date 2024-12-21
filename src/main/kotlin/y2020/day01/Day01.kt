@@ -10,7 +10,7 @@ fun main() {
 object Day01 {
 
     private fun parseInput(): List<Int> =
-        getInputFile(this::class.java.packageName)
+        getInputFile()
             .readLines()
             .map(String::toInt)
 

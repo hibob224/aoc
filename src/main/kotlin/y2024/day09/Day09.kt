@@ -10,7 +10,7 @@ fun main() {
 
 object Day09 {
 
-    private val input = getInputFile(this::class.java.packageName, example = false).readText()
+    private val input = getInputFile().readText()
 
     fun solvePartOne(): Long {
         val disk = buildList {

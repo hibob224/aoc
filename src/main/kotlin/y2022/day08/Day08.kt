@@ -10,7 +10,7 @@ fun main() {
 
 object Day08 {
 
-    private val input = getInputFile(this::class.java.packageName)
+    private val input = getInputFile()
         .readLines()
         .also {
             height = it.lastIndex

@@ -14,7 +14,7 @@ object Day11 {
     private const val STAIR = '.'
 
     private val input: List<MutableList<Char>> =
-        getInputFile(this::class.java.packageName)
+        getInputFile()
             .readLines()
             .map { it.toCharArray().toMutableList() }
 

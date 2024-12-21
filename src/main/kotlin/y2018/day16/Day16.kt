@@ -87,7 +87,7 @@ object Day16 {
         }
 
         // Now run all the operations on [0, 0, 0, 0]
-        val inputLines = getInputFile(this::class.java.packageName).readLines()
+        val inputLines = getInputFile().readLines()
         val instructions = inputLines.map {
             val (op, a, b, c) = opPattern.find(it)!!.destructured
             Registers(op.toInt(), a.toInt(), b.toInt(), c.toInt())

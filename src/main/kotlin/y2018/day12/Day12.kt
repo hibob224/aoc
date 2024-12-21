@@ -11,7 +11,7 @@ fun main() {
 object Day12 {
 
     private val pattern = """([#|.]{5}) => ([.|#])""".toRegex()
-    private val file = getInputFile(this::class.java.packageName)
+    private val file = getInputFile()
     private val state = mutableMapOf<Int, Char>()
     private val combinations = mutableMapOf<String, Char>()
 

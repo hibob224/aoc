@@ -14,7 +14,7 @@ object Day18 {
     private val example = false
     private val gridSize = if (example) 6 else 70
     private val p1Bytes = if (example) 12 else 1024
-    private val input = getInputFile(this::class.java.packageName, example = example)
+    private val input = getInputFile()
         .readLines()
         .map {
             val (x, y) = it.split(",").map(String::toInt)

@@ -26,7 +26,7 @@ object Day04 {
         }
     }
 
-    private fun parseInput(): List<String> = getInputFile(this::class.java.packageName).readLines()
+    private fun parseInput(): List<String> = getInputFile().readLines()
 
     fun solvePartOne(): Int {
         calledNumbers.forEach { calledNumber ->

@@ -10,7 +10,7 @@ fun main() {
 object Day02 {
 
     private val input =
-        getInputFile(this::class.java.packageName)
+        getInputFile()
             .readLines()
             .map {
                 val split = it.split(" ", limit = 2)

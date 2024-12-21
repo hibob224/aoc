@@ -10,7 +10,7 @@ fun main() {
 
 object Day20 {
 
-    private val file = getInputFile(this::class.java.packageName)
+    private val file = getInputFile()
     private val rooms = mutableMapOf<Pair<Int, Int>, Int>()
 
     init {

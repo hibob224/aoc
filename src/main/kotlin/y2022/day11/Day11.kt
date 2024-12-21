@@ -11,7 +11,7 @@ fun main() {
 object Day11 {
 
     private val opRegex = """Operation: new = (.+) ([*+]) (.*)""".toRegex()
-    private val input = getInputFile(this::class.java.packageName)
+    private val input = getInputFile()
         .readText()
         .split("\n\n")
         .map { it.split("\n") }

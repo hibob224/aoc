@@ -12,7 +12,7 @@ fun main() {
 object Day05 {
 
     private val seats =
-        getInputFile(this::class.java.packageName)
+        getInputFile()
             .readLines()
             .map { ticket ->
                 var rowRange = 0..127

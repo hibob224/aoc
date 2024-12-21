@@ -10,7 +10,7 @@ fun main() {
 
 object Day04 {
 
-    private val input = getInputFile(this::class.java.packageName).readText()
+    private val input = getInputFile().readText()
 
     fun solvePartOne(): Int = findPrefix("00000")
 

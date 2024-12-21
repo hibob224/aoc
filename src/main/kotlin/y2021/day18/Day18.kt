@@ -14,7 +14,7 @@ fun main() {
 object Day18 {
 
     private fun parseInput(): MutableList<MutableList<Any>> =
-        getInputFile(this::class.java.packageName)
+        getInputFile()
             .readLines()
             .map {
                 Json.parseToJsonElement(it).jsonArray.transform().toMutableList()

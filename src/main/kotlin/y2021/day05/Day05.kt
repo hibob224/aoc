@@ -12,7 +12,7 @@ object Day05 {
 
     private val parseRegex = """^(\d+),(\d+) -> (\d+),(\d+)""".toRegex()
     private val input: List<Pair<Point, Point>> =
-        getInputFile(this::class.java.packageName)
+        getInputFile()
             .readLines()
             .map {
                 val matches = parseRegex.find(it)!!.groupValues

@@ -11,7 +11,7 @@ fun main() {
 
 object Day9 {
 
-    private val data = getInputFile(this::class.java.packageName).readText()
+    private val data = getInputFile().readText()
     private val pattern = """(\d+) players; last marble is worth (\d+) points""".toRegex()
     private var players = 0
     private var lastMarble = 0L

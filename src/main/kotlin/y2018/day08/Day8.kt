@@ -11,7 +11,7 @@ fun main() {
 
 object Day8 {
 
-    private val data = getInputFile(this::class.java.packageName).readText().split(" ").map(String::toInt)
+    private val data = getInputFile().readText().split(" ").map(String::toInt)
     private val dataStack = ArrayDeque(data)
     private val nodes = mutableListOf<Node>()
 

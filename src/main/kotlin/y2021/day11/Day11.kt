@@ -10,7 +10,7 @@ fun main() {
 
 object Day11 {
 
-    private val input = getInputFile(this::class.java.packageName).readLines()
+    private val input = getInputFile().readLines()
         .flatMapIndexed { y: Int, row: String ->
             row.mapIndexed { x, c ->
                 Point(x, y) to c.toString().toInt()

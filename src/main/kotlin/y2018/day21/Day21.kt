@@ -12,7 +12,7 @@ fun main() {
 
 object Day21 {
 
-    private val file = getInputFile(this::class.java.packageName)
+    private val file = getInputFile()
     private val instructions = mutableListOf<Instruction>()
 
 

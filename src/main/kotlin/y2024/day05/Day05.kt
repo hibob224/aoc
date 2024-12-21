@@ -13,7 +13,7 @@ object Day05 {
     private val updates: List<List<Long>>
 
     init {
-        val (ruleInput, updateInput) = getInputFile(this::class.java.packageName, example = false).readText().split("\n\n")
+        val (ruleInput, updateInput) = getInputFile().readText().split("\n\n")
         rules = ruleInput.lines()
             .map {
                 val (v1, v2) = it.split('|')
