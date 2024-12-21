@@ -123,3 +123,11 @@ fun lcm(x: Long, y: Long): Long = x * (y / gcd(x, y))
 fun List<Long>.lcm(): Long = reduce { x, y -> lcm(x, y) }
 
 fun getInputFile(packageName: String, example: Boolean = false): File = File("src/main/kotlin/${packageName.replace('.', '/')}/${if (example) "example" else "input"}.txt")
+
+fun <T> List<T>.permutations(): List<List<T>> {
+    return if (this.size == 1) listOf(this)
+    else this.flatMap { i -> (this - i).permutations().map { listOf(i) + it } }
+}
+
+fun String.permutations() = this.toList().permutations().map { it.joinToString("") }
+
