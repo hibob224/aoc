@@ -37,53 +37,30 @@ object Day21 {
 
     fun solvePartTwo(): Long = solve(25)
 
-    private fun solve(limit: Int): Long = input.sumOf { numeric(it, limit) * it.filter(Char::isDigit).toLong() }
+    private fun solve(limit: Int): Long = input.sumOf { direction(it, limit, 0) * it.filter(Char::isDigit).toLong() }
 
-    private fun numeric(sequence: String, limit: Int): Long {
-        return sequence.fold(numericKeypad['A']!! to 0L) { (p, s), c ->
-            val targ = numericKeypad[c]!!
-            val (dx, dy) = p - targ
-
-            val paths = ((if (dx < 0) ">".repeat(-dx) else "<".repeat(dx)) + if (dy < 0) "v".repeat(-dy) else "^".repeat(dy))
-                .permutations()
-                .toSet()
-                .filter { path ->
-                    path
-                        .asSequence()
-                        .runningFold(p) { acc, d ->
-                            acc.getNeighbour(d)
-                        }
-                        .all { it in numericKeypad.values }
-                }
-                .map { "${it}A" }
-                .ifEmpty { listOf("A") }
-                .toSet()
-
-            targ to s + paths.minOf { direction(it, limit, 1) }
-        }.second
-    }
-
-    private val direction = Memo3<String, Int, Int, Long>::direction.memoize()
+    private val direction = Memo3<String, Int, Int, Long>::shortestSequence.memoize()
 }
 
-private fun Memo3<String, Int, Int, Long>.direction(sequence: String, limit: Int, depth: Int): Long {
-    return sequence.fold(directionalKeypad['A']!! to 0L) { (p, s), c ->
-        val targ = directionalKeypad[c]!!
+private fun Memo3<String, Int, Int, Long>.shortestSequence(sequence: String, limit: Int, depth: Int): Long {
+    val keypad = if (depth == 0) numericKeypad else directionalKeypad
+    return sequence.fold(keypad['A']!! to 0L) { (p, s), c ->
+        val targ = keypad[c]!!
         val (dx, dy) = p - targ
 
-        val paths = ((if (dx < 0) ">".repeat(-dx) else "<".repeat(dx)) + if (dy < 0) "v".repeat(-dy) else "^".repeat(dy))
-            .permutations()
-            .filter { path ->
+        val paths = ((if (dx < 0) ">".repeat(-dx) else "<".repeat(dx)) + if (dy < 0) "v".repeat(-dy) else "^".repeat(dy)) // Create base sequence, all these directions are required to reach our target
+            .permutations() // Create all permutations of these directions, all permutations will reach the target
+            .filter { path -> // But some permutations will lead to positions that are not buttons, which breaks the robots, filter those out
                 path
                     .asSequence()
                     .runningFold(p) { acc, d ->
                         acc.getNeighbour(d)
                     }
-                    .all { it in directionalKeypad.values }
+                    .all { it in keypad.values }
             }
-            .map { "${it}A" }
-            .ifEmpty { listOf("A") }
-            .toSet()
+            .map { "${it}A" } // Need 'A' at the end of each sequence to push the target button
+            .ifEmpty { listOf("A") } // If we have no paths, then we were already at the target, just push it
+            .toSet() // Remove duplicates
 
         targ to s + if (limit == depth) paths.minOf { it.length }.toLong() else paths.minOf { recurse(it, limit, depth + 1) }
     }.second
