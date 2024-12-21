@@ -124,9 +124,7 @@ fun List<Long>.gcd(): Long = reduce { x, y -> gcd(x, y) }
 fun lcm(x: Long, y: Long): Long = x * (y / gcd(x, y))
 fun List<Long>.lcm(): Long = reduce { x, y -> lcm(x, y) }
 
-fun Any.getInputFile(example: Boolean = false): File = getInputFile()
-
-@Deprecated("Use alternate that doesn't take package name", replaceWith = ReplaceWith("getInputFile()"))
+fun Any.getInputFile(example: Boolean = false): File = getInputFile(this::class.java.packageName, example)
 private fun getInputFile(packageName: String, example: Boolean = false): File = File("src/main/kotlin/${packageName.replace('.', '/')}/${if (example) "example" else "input"}.txt")
 
 fun <T> List<T>.permutations(): List<List<T>> {
