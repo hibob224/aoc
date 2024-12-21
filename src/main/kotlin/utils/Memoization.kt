@@ -31,3 +31,36 @@ fun <A, B, R> (Memo2<A, B, R>.(A, B) -> R).memoize(): (A, B) -> R {
     }
 }
 //endregion
+
+//region 3 params
+interface Memo3<A, B, C, R> {
+    fun recurse(a: A, b: B, c: C): R
+}
+
+abstract class Memoized3<A, B, C, R> {
+    private data class Input<A, B, C>(
+        val a: A,
+        val b: B,
+        val c: C,
+    )
+
+    private val cache = mutableMapOf<Input<A, B, C>, R>()
+    private val memo = object : Memo3<A, B, C, R> {
+        override fun recurse(a: A, b: B, c: C): R =
+            cache.getOrPut(Input(a, b, c)) { function(a, b, c) }
+    }
+
+    protected abstract fun Memo3<A, B, C, R>.function(a: A, b: B, c: C): R
+
+    fun execute(a: A, b: B, c: C): R = memo.recurse(a, b, c)
+}
+
+fun <A, B, C, R> (Memo3<A, B, C, R>.(A, B, C) -> R).memoize(): (A, B, C) -> R {
+    val memoized = object : Memoized3<A, B, C, R>() {
+        override fun Memo3<A, B, C, R>.function(a: A, b: B, c: C): R = this@memoize(a, b, c)
+    }
+    return { a, b, c ->
+        memoized.execute(a, b, c)
+    }
+}
+//endregion

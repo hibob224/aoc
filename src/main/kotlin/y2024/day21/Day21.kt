@@ -1,8 +1,6 @@
 package y2024.day21
 
-import utils.getInputFile
-import utils.permutations
-import utils.toPointGrid
+import utils.*
 
 fun main() {
     println("Part one: " + Day21.solvePartOne())
@@ -28,18 +26,18 @@ fun main() {
  * | < | v | > |
  * +---+---+---+
  */
+private val numericKeypad = listOf("789", "456", "123", ".0A").toPointGrid().toList().filterNot { it.second == '.' }.associate { it.second to it.first }
+private val directionalKeypad = listOf(".^A", "<v>").toPointGrid().toList().filterNot { it.second == '.' }.associate { it.second to it.first }
 
 object Day21 {
 
-    private val input = getInputFile(this::class.java.packageName, example = false).readLines()
-    private val numericKeypad = listOf("789", "456", "123", ".0A").toPointGrid().toList().filterNot { it.second == '.' }.associate { it.second to it.first }
-    private val directionalKeypad = listOf(".^A", "<v>").toPointGrid().toList().filterNot { it.second == '.' }.associate { it.second to it.first }
+    private val input = getInputFile(this::class.java.packageName).readLines()
 
-    fun solvePartOne(): Long = input.sumOf { numeric(it, 2) * it.filter(Char::isDigit).toLong() }
+    fun solvePartOne(): Long = solve(2)
 
-    fun solvePartTwo(): Long {
-        return 0
-    }
+    fun solvePartTwo(): Long = solve(25)
+
+    private fun solve(limit: Int): Long = input.sumOf { numeric(it, limit) * it.filter(Char::isDigit).toLong() }
 
     private fun numeric(sequence: String, limit: Int): Long {
         return sequence.fold(numericKeypad['A']!! to 0L) { (p, s), c ->
@@ -65,26 +63,28 @@ object Day21 {
         }.second
     }
 
-    private fun direction(sequence: String, limit: Int, depth: Int): Long {
-        return sequence.fold(directionalKeypad['A']!! to 0L) { (p, s), c ->
-            val targ = directionalKeypad[c]!!
-            val (dx, dy) = p - targ
+    private val direction = Memo3<String, Int, Int, Long>::direction.memoize()
+}
 
-            val paths = ((if (dx < 0) ">".repeat(-dx) else "<".repeat(dx)) + if (dy < 0) "v".repeat(-dy) else "^".repeat(dy))
-                .permutations()
-                .filter { path ->
-                    path
-                        .asSequence()
-                        .runningFold(p) { acc, d ->
-                            acc.getNeighbour(d)
-                        }
-                        .all { it in directionalKeypad.values }
-                }
-                .map { "${it}A" }
-                .ifEmpty { listOf("A") }
-                .toSet()
+private fun Memo3<String, Int, Int, Long>.direction(sequence: String, limit: Int, depth: Int): Long {
+    return sequence.fold(directionalKeypad['A']!! to 0L) { (p, s), c ->
+        val targ = directionalKeypad[c]!!
+        val (dx, dy) = p - targ
 
-            targ to s + if (limit == depth) paths.minOf { it.length }.toLong() else paths.minOf { direction(it, limit, depth + 1) }
-        }.second
-    }
+        val paths = ((if (dx < 0) ">".repeat(-dx) else "<".repeat(dx)) + if (dy < 0) "v".repeat(-dy) else "^".repeat(dy))
+            .permutations()
+            .filter { path ->
+                path
+                    .asSequence()
+                    .runningFold(p) { acc, d ->
+                        acc.getNeighbour(d)
+                    }
+                    .all { it in directionalKeypad.values }
+            }
+            .map { "${it}A" }
+            .ifEmpty { listOf("A") }
+            .toSet()
+
+        targ to s + if (limit == depth) paths.minOf { it.length }.toLong() else paths.minOf { recurse(it, limit, depth + 1) }
+    }.second
 }
