@@ -139,3 +139,5 @@ fun <T> Sequence<T>.repeat() = sequence {
         yieldAll(this@repeat)
     }
 }
+
+fun isCi(): Boolean = System.getenv("CI").toBoolean()

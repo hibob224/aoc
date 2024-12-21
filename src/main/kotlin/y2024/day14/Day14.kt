@@ -2,6 +2,7 @@ package y2024.day14
 
 import utils.Point
 import utils.getInputFile
+import utils.isCi
 import utils.product
 import java.io.File
 
@@ -59,7 +60,7 @@ object Day14 {
     }
 
     private fun printOutput(robots: Set<Point>) {
-        if (System.getenv("CI").toBoolean()) return
+        if (isCi()) return
         val out = buildString {
             (0 until height).forEach { y ->
                 (0 until width).forEach { x ->
