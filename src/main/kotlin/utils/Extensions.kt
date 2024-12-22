@@ -141,3 +141,16 @@ fun <T> Sequence<T>.repeat() = sequence {
 }
 
 fun isCi(): Boolean = System.getenv("CI").toBoolean()
+
+/**
+ * Find index of [subList] within [mainList]
+ */
+fun findSubsequenceIndex(mainList: List<Long>, subList: List<Long>): Int {
+    if (subList.isEmpty()) return 0 // Empty subsequence is always found at the beginning
+
+    for (i in mainList.indices) {
+        if (i + subList.size > mainList.size) break // Avoid out-of-bounds access
+        if (mainList.subList(i, i + subList.size) == subList) return i
+    }
+    return -1
+}
