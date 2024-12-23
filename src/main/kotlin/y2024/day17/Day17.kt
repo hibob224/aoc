@@ -129,5 +129,4 @@ object Day17 {
     private const val OUT = 5 // combo % 8, output
     private const val BDV = 6 // A / combo^2 > B
     private const val CDV = 7 // A / combo^2 > C
-
 }

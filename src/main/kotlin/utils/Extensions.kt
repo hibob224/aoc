@@ -124,8 +124,13 @@ fun List<Long>.gcd(): Long = reduce { x, y -> gcd(x, y) }
 fun lcm(x: Long, y: Long): Long = x * (y / gcd(x, y))
 fun List<Long>.lcm(): Long = reduce { x, y -> lcm(x, y) }
 
+//region Input
 fun Any.getInputFile(example: Boolean = false): File = getInputFile(this::class.java.packageName, example)
 private fun getInputFile(packageName: String, example: Boolean = false): File = File("src/main/kotlin/${packageName.replace('.', '/')}/${if (example) "example" else "input"}.txt")
+
+fun File.longs(seperator: String = "\n") = strings(seperator).map(String::toLong)
+fun File.strings(seperator: String = "\n") = readText().split(seperator)
+//endregion
 
 fun <T> List<T>.permutations(): List<List<T>> {
     return if (this.size == 1) listOf(this)
@@ -153,4 +158,11 @@ fun findSubsequenceIndex(mainList: List<Long>, subList: List<Long>): Int {
         if (mainList.subList(i, i + subList.size) == subList) return i
     }
     return -1
+}
+
+fun Any?.print() = also(::println)
+
+fun <T> List<T>.toPair(): Pair<T, T> {
+    check(size == 2)
+    return get(0) to get(1)
 }
