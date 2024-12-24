@@ -1,6 +1,7 @@
 package y2024.day24
 
 import utils.getInputFile
+import utils.print
 
 fun main() {
     val day = Day24()
@@ -31,7 +32,7 @@ class Day24 {
             }
     }
 
-    fun solvePartOne(): Long { // 1011110000111111111110101101011110010001110000 too high
+    fun solvePartOne(): Long {
         val wireValues = initialWireValues.toMutableMap()
 
         return connections.keys
@@ -40,11 +41,31 @@ class Day24 {
             .reversed()
             .joinToString("") { if (wireValues.wireValue(it)) "1" else "0" }
             .toLong(2)
-//            .map { wireValues.wireValue(it) }
     }
 
-    fun solvePartTwo(): Long {
-        return 0
+    fun solvePartTwo(): String {
+        connections.keys
+            .filter { it.startsWith("z") }
+            .filter { connections.getValue(it).third != Operation.XOR }
+            .print()
+
+        val expectedP1 = 51745744348272
+        println((solvePartOne() xor expectedP1).toString(2))
+        //2,281,963,520
+
+//        connections.keys
+//            .filter { it.startsWith("z") }
+//            .sortedWith(naturalOrderComparator)
+//            .reversed()
+////            .onEach {
+////                if (!wireValues.wireValue(it)) {
+////                    Json.encodeToString(Seq.serializer(), wireValues.sequence(it)).print()
+////                }
+////            }
+//            .print()
+
+        // This one was mostly pen and paper, with some of the above to help find the wires that needed moved...
+        return "bfq,bng,fjp,hkh,hmt,z18,z27,z31"
     }
 
     private enum class Operation {
@@ -64,7 +85,7 @@ class Day24 {
         }
     }
 
-    val naturalOrderComparator = Comparator<String> { str1, str2 ->
+    private val naturalOrderComparator = Comparator<String> { str1, str2 ->
         val regex = "\\d+".toRegex()
         var i = 0
         while (i < str1.length && i < str2.length) {

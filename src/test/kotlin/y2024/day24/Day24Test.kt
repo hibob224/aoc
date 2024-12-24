@@ -14,6 +14,6 @@ internal class Day24Test {
 
     @Test
     fun solvePartTwo() {
-        assertEquals(0, day.solvePartTwo())
+        assertEquals("bfq,bng,fjp,hkh,hmt,z18,z27,z31", day.solvePartTwo())
     }
 }
