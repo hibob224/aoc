@@ -130,6 +130,7 @@ private fun getInputFile(packageName: String, example: Boolean = false): File = 
 
 fun File.longs(seperator: String = "\n") = strings(seperator).map(String::toLong)
 fun File.strings(seperator: String = "\n") = readText().split(seperator)
+fun String.lines() = split("\n")
 //endregion
 
 fun <T> List<T>.permutations(): List<List<T>> {
