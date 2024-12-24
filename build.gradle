@@ -1,6 +1,7 @@
 plugins {
     id 'org.jetbrains.kotlin.jvm' version '2.0.21'
     id 'org.jetbrains.kotlin.plugin.serialization' version '2.0.21'
+    id 'de.undercouch.download' version '5.6.0'
 }
 
 group 'com.galajeu'
@@ -34,4 +35,14 @@ compileTestKotlin {
     kotlinOptions {
         jvmTarget = "11"
     }
+}
+
+tasks.register('fetchInput', Download) {
+    Calendar now = Calendar.getInstance()
+    String year = project.getProperties().getOrDefault("year", now.get(Calendar.YEAR))
+    String day = project.getProperties().getOrDefault("day", now.get(Calendar.DAY_OF_MONTH))
+    String paddedDay = day.padLeft(2, '0')
+    src "https://adventofcode.com/$year/day/$day/input"
+    dest new File(rootDir, "src/main/kotlin/y$year/day$paddedDay/input.txt")
+    header("Cookie", "session=$aocSession")
 }
