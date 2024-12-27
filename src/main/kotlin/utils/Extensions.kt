@@ -161,7 +161,7 @@ fun findSubsequenceIndex(mainList: List<Long>, subList: List<Long>): Int {
     return -1
 }
 
-fun Any?.print() = also(::println)
+fun <T> T.print() = also(::println)
 
 fun <T> List<T>.toPair(): Pair<T, T> {
     check(size == 2)

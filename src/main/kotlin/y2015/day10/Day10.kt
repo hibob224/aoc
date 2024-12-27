@@ -1,23 +1,18 @@
 package y2015.day10
 
-fun main() {
-    val day = Day10()
-    println("Part one: " + day.solvePartOne())
-    println("Part two: " + day.solvePartTwo())
-}
+import template.Puzzle
+import template.solve
 
-class Day10 {
+fun main() = solve { Day10() }
+
+class Day10 : Puzzle<Int, Int>(2015, 10) {
 
     private val regex = """(\d)\1*""".toRegex()
-    private val input = "1113122113"
+    override val input = rawInput
 
-    fun solvePartOne(): Int {
-        return generateSequence(input, ::lookAndSee).elementAt(40).length
-    }
+    override fun solvePartOne(): Int = generateSequence(input, ::lookAndSee).elementAt(40).length
 
-    fun solvePartTwo(): Int {
-        return generateSequence(input, ::lookAndSee).elementAt(50).length
-    }
+    override fun solvePartTwo(): Int = generateSequence(input, ::lookAndSee).elementAt(50).length
 
     private fun lookAndSee(inp: String): String {
         val matches = regex.findAll(inp)

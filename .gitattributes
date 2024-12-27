@@ -1,3 +1,4 @@
 input.txt filter=git-crypt diff=git-crypt
 correctedinput.txt filter=git-crypt diff=git-crypt
 sample.txt filter=git-crypt diff=git-crypt
+d*.txt filter=git-crypt diff=git-crypt

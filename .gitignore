@@ -4,3 +4,5 @@ build/
 .gradle/
 out.txt
 .DS_Store
+.env
+submission.cache
