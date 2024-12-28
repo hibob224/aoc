@@ -21,6 +21,7 @@ fun solve(puzzleProvider: () -> Puzzle<*, *>) {
 }
 
 private fun submitAnswer(answer: String, year: Int, day: Int, part: Int, example: Boolean) {
+    if (answer.isBlank() || answer == "0") return
     if (isSolved(year, day, part) || example) return
     print("Submit answer? (Yes/No/Ignore): ")
     val inp = readln().lowercase()

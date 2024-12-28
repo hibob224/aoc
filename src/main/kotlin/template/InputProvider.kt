@@ -16,7 +16,7 @@ object InputProvider {
             .also {
                 if (!it.exists()) downloadInput(year, day, it)
             }
-    }.readText()
+    }.readText().trim()
 
     private fun downloadInput(year: Int, day: Int, out: File) = runBlocking {
         println("Downloading input: Y${year}D$day")
