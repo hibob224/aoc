@@ -15,9 +15,9 @@ fun solve(puzzleProvider: () -> Puzzle<*, *>) {
     val (p2, p2d) = measureTimedValue { puzzle.solvePartTwo() }
     println("Solving Y${puzzle.year}-D${puzzle.day}")
     println("Part One: ${p1!!.bold()} - ${p1d.inWholeMilliseconds} ms")
-    submitAnswer(p1.toString(), puzzle.year, puzzle.day, 1, puzzle.example)
+//    submitAnswer(p1.toString(), puzzle.year, puzzle.day, 1, puzzle.example)
     println("Part Two: ${p2!!.bold()} - ${p2d.inWholeMilliseconds} ms")
-    submitAnswer(p2.toString(), puzzle.year, puzzle.day, 2, puzzle.example)
+//    submitAnswer(p2.toString(), puzzle.year, puzzle.day, 2, puzzle.example)
 }
 
 private fun submitAnswer(answer: String, year: Int, day: Int, part: Int, example: Boolean) {

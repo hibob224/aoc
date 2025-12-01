@@ -9,14 +9,17 @@ import java.io.File
 
 object InputProvider {
 
-    fun provideInput(year: Int, day: Int, example: Boolean): String = if (example) {
-        File("input/examples/y$year/d$day.txt")
-    } else {
-        File("input/y$year/d$day.txt")
-            .also {
-                if (!it.exists()) downloadInput(year, day, it)
-            }
-    }.readText().trim()
+    fun provideInput(year: Int, day: Int, example: Boolean): String {
+        val dayStr = "$day".padStart(2, '0')
+        return if (example) {
+            File("src/main/kotlin/y$year/day$dayStr/example.txt")
+        } else {
+            File("src/main/kotlin/y$year/day$dayStr/input.txt")
+                .also {
+                    if (!it.exists()) downloadInput(year, day, it)
+                }
+        }.readText().trim()
+    }
 
     private fun downloadInput(year: Int, day: Int, out: File) = runBlocking {
         println("Downloading input: Y${year}D$day")
