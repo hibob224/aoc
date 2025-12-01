@@ -1,4 +1,4 @@
-package y2015
+package y2015.day12
 
 import kotlinx.serialization.json.*
 import template.Puzzle

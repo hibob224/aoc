@@ -1,4 +1,4 @@
-package y2015
+package y2015.day13
 
 import template.Puzzle
 import template.solve
