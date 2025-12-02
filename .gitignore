@@ -7,3 +7,4 @@ out.txt
 .env
 submission.cache
 src/main/kotlin/chaptermeeting
+.kotlin

@@ -17,6 +17,26 @@ fun Int.isMultipleOf(x: Int): Boolean = this % x == 0
 
 fun Long.isMultipleOf(x: Long): Boolean = this % x == 0L
 
+fun Int.factors(): List<Int> {
+    val factors = mutableListOf<Int>()
+    if (this < 1) return factors
+    (1..this / 2)
+        .filter(::isMultipleOf)
+        .forEach(factors::add)
+    factors.add(this)
+    return factors
+}
+
+fun Long.factors(): List<Long> {
+    val factors = mutableListOf<Long>()
+    if (this < 1) return factors
+    (1..this / 2)
+        .filter(::isMultipleOf)
+        .forEach(factors::add)
+    factors.add(this)
+    return factors
+}
+
 val Int.isEven: Boolean
     get() = isMultipleOf(2)
 
