@@ -18,40 +18,33 @@ class Day02 : Puzzle<Long, Long>(2025, 2, example = false) {
 
     override fun solvePartOne(): Long {
         return input.sumOf { range ->
-            range.sumOf {
-                val str = it.toString()
-                if (str.length.isEven) {
-                    val (first, second) = str.take(str.length / 2) to str.substring(str.length / 2)
-                    if (first == second) {
-                        it
-                    } else {
-                        0L
-                    }
-                } else {
-                    0L
+            range
+                .filter {
+                    val str = it.toString()
+                    str.length.isEven && str.take(str.length / 2) == str.substring(str.length / 2)
                 }
-            }
+                .sum()
         }
     }
 
     override fun solvePartTwo(): Long {
         return input.sumOf outer@{ range ->
-            range.sumOf {
-                val str = it.toString()
-                if (str.length == 1) return@sumOf 0 // Can't repeat more than once if there is only one digit
-                if (str.toSet().size == 1) return@sumOf it // Special case for all same digit
+            range
+                .filter {
+                    val str = it.toString()
+                    if (str.length == 1) return@filter false // Can't repeat more than once if there is only one digit
+                    if (str.toSet().size == 1) return@filter true // Special case for all same digit
+                    val factors = str.length.factors()
+                    val largestFactor = factors.dropLast(1).last()
 
-                val factors = str.length.factors()
-                val largestFactor = factors.dropLast(1).last()
-
-                for (i in largestFactor downTo 2) {
-                    if (str.chunked(i).toSet().size == 1) {
-                        return@sumOf it
+                    for (i in largestFactor downTo 2) {
+                        if (str.chunked(i).toSet().size == 1) {
+                            return@filter true
+                        }
                     }
+                    false
                 }
-
-                return@sumOf 0L
-            }
+                .sum()
         }
     }
 }
