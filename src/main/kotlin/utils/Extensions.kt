@@ -123,8 +123,8 @@ fun <T> List<T?>.groupOnNulls(): List<List<T>> = buildList {
     add(current)
 }
 
-fun List<Int>.product(): Int = reduce(Int::times)
-fun List<Long>.product(): Long = reduce(Long::times)
+fun Iterable<Int>.product(): Int = reduce(Int::times)
+fun Iterable<Long>.product(): Long = reduce(Long::times)
 
 fun JsonArray.transform(): List<Any> = map {
     if (it is JsonArray) {
