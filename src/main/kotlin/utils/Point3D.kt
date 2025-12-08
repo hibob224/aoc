@@ -1,10 +1,17 @@
 package utils
 
 import kotlin.math.abs
+import kotlin.math.pow
+import kotlin.math.sqrt
 
 data class Point3D(val x: Int, val y: Int, val z: Int) {
 
+    constructor(coords: Triple<Int, Int, Int>) : this(coords.first, coords.second, coords.third)
+    constructor(coords: List<Int>) : this(coords[0], coords[1], coords[2])
+
     fun manhattan(other: Point3D) = abs(x - other.x) + abs(y - other.y) + abs(z - other.z)
+
+    fun euclidean(other: Point3D): Double = sqrt((other.x - x).toDouble().pow(2) + (other.y - y).toDouble().pow(2) + (other.z - z).toDouble().pow(2))
 
     fun getNeighbours(): List<Point3D> = directNeighbourTranslations.map { it + this }
 
