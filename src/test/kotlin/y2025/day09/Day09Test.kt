@@ -10,6 +10,6 @@ class Day09Test : PuzzleTest<Long, Long>() {
 
     @Test
     fun `test y2025d09`() {
-        runTest(4_740_155_680, 0)
+        runTest(4_740_155_680, 1_543_501_936)
     }
 }

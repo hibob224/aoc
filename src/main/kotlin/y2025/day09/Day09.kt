@@ -4,6 +4,9 @@ import template.Puzzle
 import template.solve
 import utils.Point
 import utils.combinations
+import java.awt.Polygon
+import java.awt.geom.Rectangle2D
+import kotlin.math.absoluteValue
 
 fun main() = solve { Day09() }
 
@@ -21,6 +24,23 @@ class Day09 : Puzzle<Long, Long>(2025, 9, example = false) {
             }
 
     override fun solvePartTwo(): Long {
-        return 0
+        val polygon = Polygon()
+        input.forEach { (x, y) ->
+            polygon.addPoint(x, y)
+        }
+        val rects = input
+            .combinations(2)
+            .map { (a, b) ->
+                Rectangle2D.Double(
+                    minOf(a.x, b.x).toDouble(),
+                    minOf(a.y, b.y).toDouble(),
+                    (b.x - a.x).absoluteValue.toDouble(),
+                    (b.y - a.y).absoluteValue.toDouble(),
+                )
+            }
+        return rects
+            .filter { it in polygon }
+            .maxOf { it.width.inc() * it.height.inc() }
+            .toLong()
     }
 }
