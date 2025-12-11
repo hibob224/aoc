@@ -10,6 +10,6 @@ class Day11Test : PuzzleTest<Long, Long>() {
 
     @Test
     fun `test y2025d11`() {
-        runTest(708, 0)
+        runTest(708, 545394698933400)
     }
 }
