@@ -1,11 +1,13 @@
 package y2025.day10
 
+import com.microsoft.z3.Context
+import com.microsoft.z3.Status
 import template.Puzzle
 import template.solve
 
 fun main() = solve { Day10() }
 
-class Day10 : Puzzle<Int, Long>(2025, 10, example = false) {
+class Day10 : Puzzle<Int, Int>(2025, 10, example = false) {
 
     override val input = rawInput
         .lines()
@@ -52,8 +54,34 @@ class Day10 : Puzzle<Int, Long>(2025, 10, example = false) {
         return out
     }
 
-    override fun solvePartTwo(): Long {
-        return 0
+    override fun solvePartTwo(): Int {
+        // A lot of help on this one, would've never known about Z3
+        return input.sumOf { puzzle ->
+            Context().use { ctx ->
+                val opt = ctx.mkOptimize()
+                val vars = puzzle.buttons.indices.map { ctx.mkIntConst("b$it") }
+                vars.forEach { opt.Add(ctx.mkGe(it, ctx.mkInt(0))) }
+                puzzle.joltages.indices.forEach { i ->
+                    val terms = puzzle.buttons.withIndex().filter { i in it.value }.map { vars[it.index] }
+                    if (terms.isNotEmpty()) {
+                        val sum = if (terms.size == 1) {
+                            terms[0]
+                        } else {
+                            ctx.mkAdd(*terms.toTypedArray())
+                        }
+                        opt.Add(ctx.mkEq(sum, ctx.mkInt(puzzle.joltages[i])))
+                    } else if (puzzle.joltages[i] != 0) {
+                        error("Failed")
+                    }
+                }
+                opt.MkMinimize(ctx.mkAdd(*vars.toTypedArray()))
+                if (opt.Check() == Status.SATISFIABLE) {
+                    vars.sumOf { opt.model.evaluate(it, false).toString().toInt() }
+                } else {
+                    0
+                }
+            }
+        }
     }
 
     data class State(

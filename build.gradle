@@ -20,6 +20,7 @@ dependencies {
     implementation "io.ktor:ktor-client-okhttp:$ktor"
     implementation "ch.qos.logback:logback-classic:1.5.15"
     implementation "io.github.cdimascio:dotenv-kotlin:6.5.0"
+    implementation "tools.aqua:z3-turnkey:4.14.1"
     testImplementation "io.kotest:kotest-assertions-core:6.0.0.M1"
 }
 

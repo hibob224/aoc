@@ -4,12 +4,12 @@ import PuzzleTest
 import org.junit.jupiter.api.Test
 import template.Puzzle
 
-class Day10Test : PuzzleTest<Int, Long>() {
+class Day10Test : PuzzleTest<Int, Int>() {
 
-    override val puzzle: () -> Puzzle<Int, Long> = { Day10() }
+    override val puzzle: () -> Puzzle<Int, Int> = { Day10() }
 
     @Test
     fun `test y2025d10`() {
-        runTest(475, 0)
+        runTest(475, 18273)
     }
 }
